@@ -17,10 +17,13 @@ $(document).ready(function(){
 		})
 		$(buttonID).addClass("btn btn-success");
 
-		if (buttonID === "#rectButton") {
+		if (buttonID === "#rectButton"){
 			var rect = new Rectangle(0, 0);
 			rect.draw(context);
-		};
+		}else if(buttonID === "#circleButton"){
+			var circle = new Circle(0,0);
+			circle.draw(context);
+		}
 
 	});
 
