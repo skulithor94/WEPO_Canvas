@@ -7,10 +7,27 @@
         <title>Untitled</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="author" href="humans.txt">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     </head>
     <body>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="js/main.js"></script>
-        <canvas id="myCanvas" width="500", height="500"></canvas>
+        <div class="container">
+	        <div class="row">
+	            <div class="col-md-5">        
+		        	<canvas id="myCanvas" width="500", height="500"></canvas>
+		        </div>
+			    <div class="col-xs-3">
+			    	<ul id="buttonMenu">
+			            <li><button type="button" class="btn btn-default" id="penButton">Pen</button></li>
+			            <li><button type="button" class="btn btn-default" id="lineButton">Line</button></li>
+			            <li><button type="button" class="btn btn-default" id="rectButton">Rectangle</button></li>
+			            <li><button type="button" class="btn btn-default" id="circleButton">Circle</button></li>
+			            <li><button type="button" class="btn btn-default" id="textButton">Text</button></li>
+			            <li><button type="button" class="btn btn-default" id="selectButton">Select</button></li>
+			        </ul>
+		        </div>
+	        </div>
+        </div>
     </body>
 </html>
