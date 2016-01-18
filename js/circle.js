@@ -1,6 +1,10 @@
 var Circle = Shape.extend({
-	draw: function(context){
+	draw: function(context,buttonID){
 		$("#myCanvas").mousedown(function(e){
+			var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
+			if(button !== "circleButton"){
+				return;
+			}
 			this.x = e.pageX - this.offsetLeft;
 			this.y = e.pageY - this.offsetTop;
 
