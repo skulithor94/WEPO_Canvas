@@ -5,7 +5,7 @@ var Shape = Base.extend({
 		this.endX = x;
 		this.endY = y;
 	},
-	draw: function(context){
+	draw: function(canvas){
 		
 	}
 });

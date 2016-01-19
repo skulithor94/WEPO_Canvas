@@ -24,11 +24,17 @@ $(document).ready(function(){
 
 	canvas.onmousedown = function(evt){
 		isDown = true;
-		var shape;
+		var shape = getShape(evt);
 
-		button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
+		/*button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
 		if (button === "rectButton"){
 		 	shape = new Rectangle(evt.x- boundingRect.left, evt.y - boundingRect.top);
+		}else if(button === "circleButton"){
+			var circle = new Circle(0, 0);
+			circle.draw(context);
+		}else{
+			//pen
+		}*/
 			canvas.onmousemove = function(evt){
 				if(!isDown){
 					return;
@@ -43,12 +49,7 @@ $(document).ready(function(){
 				shapes.push(shape);
 				redraw();
 			}
-		}else if(button === "circleButton"){
-			var circle = new Circle(0, 0);
-			circle.draw(context);
-		}else{
-			//pen
-		}
+
 		redraw();
 	};
 
@@ -57,5 +58,18 @@ $(document).ready(function(){
 		for (var i = 0; i < shapes.length; i++) {
 			shapes[i].draw(context);
 		};
+	}
+
+	getShape = function(evt){
+		button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
+		if (button === "rectButton"){
+		 	return shape = new Rectangle(evt.x - boundingRect.left, evt.y - boundingRect.top);
+		}else if(button === "circleButton"){
+			return new Circle(evt.x - boundingRect.left, evt.y - boundingRect.top);
+		}else if(button === "lineButton"){
+			return new Line(evt.x - boundingRect.left, evt.y - boundingRect.top);
+		}else{
+			
+		}
 	}
 })
