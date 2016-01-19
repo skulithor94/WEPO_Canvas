@@ -3,6 +3,37 @@
 	border-color: rgb(0,0,0);
 }
 
-li {
-	list-style-type: none;
+#ground{
+    position:
+	absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
 }
+
+#sizebar{
+	width: 100;
+	display: inline-block;
+}
+
+#well{
+	width: 855;
+	background-color: white;
+	border-color: white;
+}
+
+#innerwell{
+	width: 250;
+	height: 10px;
+	margin: 5px;
+	background-color: white;
+}
+
+#typo{
+	width: 110;
+	display: inline-block;
+}
+

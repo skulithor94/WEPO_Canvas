@@ -1,13 +1,13 @@
-<!doctype html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Untitled</title>
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
         <link rel="author" href="humans.txt">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
     </head>
     <body>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -16,8 +16,85 @@
         <script src="js/line.js"></script>
         <script src="js/rectangle.js"></script>
         <script src="js/circle.js"></script>
+        <script src="js/pen.js"></script>
         <script src="js/main.js"></script>
-        <div class="container">
+        <div id="buttonMenu" style="float:left; height: 480px">
+            <button id="penButton" type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px;" >
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </button>
+            <button id="color" type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px; position:relative">
+                <div>
+                    <span id="rainbow" class="glyphicon glyphicon-tint" aria-hidden="true" style="color: black"></span>
+                    <input id="ground" type="color" value="#000000"onload="hide()"/>
+                </div>
+            </button>
+            <button id="rectButton" type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
+                <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+            </button>
+            <button id="circleButton" type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
+                <span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
+            </button>
+            <button id="lineButton" type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+            </button>
+            <button id="textButton" type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px" >
+                <span class="glyphicon glyphicon-font" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
+                <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
+                <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
+                <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
+                <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px" onclick="trash()">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div id="divcanvas">
+            <canvas id="myCanvas" width="800" height="480" style="border:1px solid"></canvas>
+        </div>
+        <div id="well" class="well">
+            <span id="innerwell"class="well">
+                <label id="sizer">Pen size:</label>
+                <input id="sizebar" type="range" min="1" max="10" value="1" step="1" onchange="changesize(this.value)">
+            </span>
+            <span id="innerwell"class="well">
+                <label>Font size:</label>
+                <select id="fontsize">
+                    <option value="10px">10</option>
+                    <option value="20px">20</option>
+                    <option value="30px">30</option>
+                    <option value="40px">40</option>
+                    <option value="50px">50</option>
+                    <option value="60px">60</option>
+                </select>
+            </span>
+            <span id="innerwell" class="well">
+                <label>Fonts:</label>
+                <select id="fonts">
+                    <option value="Arial">Arial</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="serif">serif</option>
+                    <option value="sans-serif">sans-serif</option>
+                </select>
+            </span>
+            <span id="innerwell" class="well">
+                <label>Text:</label>
+                <input id="typo" type="text" class="form-control">
+            </span>
+        </div>
+        <!-- <div class="container">
 	        <div class="row">
 	            <div class="col-md-5">        
 		        	<canvas id="myCanvas" width="500", height="500"></canvas>
@@ -33,6 +110,6 @@
 			        </ul>
 		        </div>
 	        </div>
-        </div>
+        </div> -->
     </body>
 </html>

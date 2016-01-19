@@ -7,6 +7,21 @@ $(document).ready(function(){
 	var button;
 	var isDown = false;
 	var boundingRect = canvas.getBoundingClientRect();
+	var color = "black";
+	var width = "1";
+
+	function changesize(sizer){
+		document.getElementById("sizebar").innerHTML = sizer;
+		width = sizer;
+	}
+
+	var coloring = document.getElementById("ground"), 		
+		rainbow = document.getElementById("rainbow");
+
+	coloring.addEventListener("input", function(){
+		color = coloring.value;
+		rainbow.style.color = color;
+	}, false);
 
 
 	//funtion that determines what tool the user wants to use
@@ -15,26 +30,16 @@ $(document).ready(function(){
 		buttonID = $(this).attr('id');
 		buttonID = "#" + buttonID;
 		
-		$("#buttonMenu li button").each(function(){
+		$("#buttonMenu button").each(function(){
 			$(this).removeClass();
-			$(this).addClass('btn btn-default');
+			$(this).addClass('btn btn-default btn-lg');
 		})
-		$(buttonID).addClass("btn btn-success");
+		$(buttonID).addClass("btn btn-success btn-lg");
 	});
 
 	canvas.onmousedown = function(evt){
 		isDown = true;
 		var shape = getShape(evt);
-
-		/*button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
-		if (button === "rectButton"){
-		 	shape = new Rectangle(evt.x- boundingRect.left, evt.y - boundingRect.top);
-		}else if(button === "circleButton"){
-			var circle = new Circle(0, 0);
-			circle.draw(context);
-		}else{
-			//pen
-		}*/
 			canvas.onmousemove = function(evt){
 				if(!isDown){
 					return;
@@ -49,7 +54,6 @@ $(document).ready(function(){
 				shapes.push(shape);
 				redraw();
 			}
-
 		redraw();
 	};
 
@@ -63,13 +67,13 @@ $(document).ready(function(){
 	getShape = function(evt){
 		button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
 		if (button === "rectButton"){
-		 	return shape = new Rectangle(evt.x - boundingRect.left, evt.y - boundingRect.top);
+		 	return shape = new Rectangle(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else if(button === "circleButton"){
-			return new Circle(evt.x - boundingRect.left, evt.y - boundingRect.top);
+			return new Circle(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else if(button === "lineButton"){
-			return new Line(evt.x - boundingRect.left, evt.y - boundingRect.top);
+			return new Line(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else{
-			
+			return new Pen(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}
 	}
 })
