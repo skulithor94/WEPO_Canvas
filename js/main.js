@@ -4,20 +4,18 @@ $(document).ready(function(){
 	var canvas = document.getElementById("myCanvas");
 	var context = canvas.getContext("2d");
 	var shapes = new Array();
-	var button;
+	var button = "penButton";
 	var isDown = false;
 	var boundingRect = canvas.getBoundingClientRect();
 	var color = "black";
 	var width = "1";
 
-	function changesize(sizer){
-		document.getElementById("sizebar").innerHTML = sizer;
-		width = sizer;
-	}
+	$("#sizebar").change(function(){
+		width = $(this).val();
+	});
 
 	var coloring = document.getElementById("ground"), 		
 		rainbow = document.getElementById("rainbow");
-
 	coloring.addEventListener("input", function(){
 		color = coloring.value;
 		rainbow.style.color = color;
