@@ -1,15 +1,22 @@
 var Rectangle = Shape.extend({
-	draw: function(context){
-		$("#myCanvas").mousedown(function(e){
+	constructor: function(x, y){
+		this.base(x,y);
+	},
+	draw: function(canvas, e){
 			var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
 			if(button !== "rectButton"){
 				return;
 			}
-			this.x = e.pageX - this.offsetLeft;
-			this.y = e.pageY - this.offsetTop;
+			canvas.strokeRect(this.x, this.y, this.endX, this.endY);
+	},
 
-			context.fillStyle = "blue";
-			context.fillRect(this.x - 90, this.y - 30, 60, 60);
-		});
+	drawing: function(canvas, e){
+		var rect = canvas.getBoundingClientRect();
+		var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
+		if(button !== "rectButton"){
+			return;
+		}
+		this.endX = e.x - this.x - rect.left;
+		this.endY = e.y - this.y - rect.top;
 	}
 });
