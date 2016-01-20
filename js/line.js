@@ -8,7 +8,6 @@ var Line = Shape.extend({
 		context.lineTo(this.endX, this.endY);
 		context.stroke();
 		context.closePath();
-
 	},
 	drawing: function(canvas, e){
 		var rect = canvas.getBoundingClientRect();

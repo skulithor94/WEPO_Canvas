@@ -9,6 +9,21 @@ $(document).ready(function(){
 	var boundingRect = canvas.getBoundingClientRect();
 	var color = "black";
 	var width = "1";
+	var font = "Arial";
+	var fontsize = "10px";
+	var text = "Halló heimur!";
+
+	$("#fonts").change(function(){
+		font = $(this).val();
+	});
+	$("#fontsize").change(function(){
+		fontsize = $(this).val();
+	});
+
+	$("#typo").change(function(){
+		text = $(this).val();
+	});
+
 
 	$("#sizebar").change(function(){
 		width = $(this).val();
@@ -27,12 +42,13 @@ $(document).ready(function(){
 		buttonID = undefined;
 		buttonID = $(this).attr('id');
 		buttonID = "#" + buttonID;
-		
+		if(buttonID != "#color"){
 		$("#buttonMenu button").each(function(){
 			$(this).removeClass();
 			$(this).addClass('btn btn-default btn-lg');
 		})
 		$(buttonID).addClass("btn btn-success btn-lg");
+		}
 	});
 
 	canvas.onmousedown = function(evt){
@@ -70,6 +86,8 @@ $(document).ready(function(){
 			return new Circle(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else if(button === "lineButton"){
 			return new Line(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
+		}else if(button === "textButton"){
+			return new Font(evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + ' ' + font, text);
 		}else{
 			return new Pen(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}
