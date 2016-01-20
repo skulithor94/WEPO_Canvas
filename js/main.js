@@ -1,10 +1,9 @@
 $(document).ready(function(){
-	console.log("I'm ready");
 
 	var canvas = document.getElementById("myCanvas");
 	var context = canvas.getContext("2d");
 	var shapes = [];
-	var button = "penButton";
+	var button = "penButton";		//Default tool.
 	var isDown = false;
 	var boundingRect = canvas.getBoundingClientRect(); //Used to get correct cords for canvas.
 	var color = "black";
@@ -12,11 +11,13 @@ $(document).ready(function(){
 	var font = "Arial";
 	var fontsize = "10px";
 	var text = "Halló heimur!";
-	var undoObject;
-	var clearUndo = false;
-	var wasCleared = false;
-	var undoCanvas = [];
+	var undoObject; 				//An object is kept in this variable if it is undone.
+	var hasBeenCleared = false;		//Used in functions to tell if canvas has been cleared.
+	var wasCleared = false;			//Used to tell if the whole canvas was cleared before last undo operation.
 
+	//If the user clears the canvas all objects are stored here
+	//so the user can undo the clear and get back his work.
+	var undoCanvas = [];			
 
 	$("#fonts").change(function(){
 		font = $(this).val();
@@ -38,10 +39,10 @@ $(document).ready(function(){
 	//if the user removes two shapes he will only get the latter back
 	//by redoing.
 	$("#undoButton").click(function(){
-		if(clearUndo && isCanvasBlank(canvas)){
+		if(hasBeenCleared && isCanvasBlank(canvas)){
 			shapes = undoCanvas;
 			redraw();
-			clearUndo = false;
+			hasBeenCleared = false;
 			wasCleared = true;
 			return;
 		}
@@ -59,22 +60,23 @@ $(document).ready(function(){
 			shapes.push(undoObject);
 			undoObject = undefined;
 			redraw();
+			wasCleared = false;
 		}
 	});
 
 	$("#clearButton").click(clear);
 
+	//Function that clears the whole canvas. The extra variables
+	//make it so the user can undo the clear. 
 	function clear(){
 		if(!isCanvasBlank(canvas)){
 			context.clearRect(0,0, context.canvas.width, context.canvas.height);
 			undoCanvas = shapes;
 			shapes = [];
-			clearUndo = true;
+			hasBeenCleared = true;
+			undoObject = undefined;
 		}
 	}
-
-
-
 
 	var coloring = document.getElementById("ground"), 		
 		rainbow = document.getElementById("rainbow");
@@ -84,18 +86,18 @@ $(document).ready(function(){
 		rainbow.style.color = color;
 	}, false);
 
-
 	//Funtion that determines what tool the user wants to use.
 	$(".btn").click(function(){
 		buttonID = undefined;
 		buttonID = $(this).attr('id');
 		buttonID = "#" + buttonID;
+		
 		if(buttonID != "#color"){
-		$("#buttonMenu button").each(function(){
+			$("#buttonMenu button").each(function(){
 			$(this).removeClass();
 			$(this).addClass('btn btn-default btn-lg');
-		})
-		$(buttonID).addClass("btn btn-success btn-lg");
+			})
+			$(buttonID).addClass("btn btn-success btn-lg");
 		}
 	});
 
@@ -124,7 +126,7 @@ $(document).ready(function(){
 
 	//Function that clears the whole canvas and draws all the shapes again:
 	//Used so only one instance of each object is seen while drawing, not all of them.
-	redraw = function(){
+	function redraw(){
 		context.clearRect(0,0, context.canvas.width, context.canvas.height);
 		for (var i = 0; i < shapes.length; i++) {
 			shapes[i].draw(context);
@@ -142,8 +144,9 @@ $(document).ready(function(){
 	}
 
 	//Function that returns the shape which corresponds to the button that is pressed.
-	getShape = function(evt){
+	function getShape(evt) {
 		button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
+
 		if (button === "rectButton"){
 		 	return new Rectangle(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else if(button === "circleButton"){
