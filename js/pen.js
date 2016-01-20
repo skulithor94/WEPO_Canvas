@@ -1,23 +1,28 @@
 var Pen = Shape.extend({
 	constructor: function(x,y, color, width){
 		this.base(x,y, color, width);
+		this.tempX = x;
+		this.tempY = y;
+		this.points = [{x: x, y: y}];
 	},
 	draw: function(context, e){
 
 		context.strokeStyle = this.color;
 		context.lineWidth = this.width;
-		context.lineCap = "round";
-		context.beginPath();
-		context.moveTo(this.x, this.y);
-		context.lineTo(this.endX, this.endY);
-		context.stroke();
+		for (var i = 0; i < this.points.length-1; i++) {
+			context.lineCap = "round";
+			context.beginPath();
+			context.moveTo(this.points[i].x, this.points[i].y);
+			context.lineTo(this.points[i+1].x, this.points[i+1].y);
+			context.stroke();
+		};
 	},
 	drawing: function(canvas, e){
-		this.x = this.endX;
-		this.y = this.endY;
-
+		this.tempX = this.endX;
+		this.tempY = this.endY;
 		var rect = canvas.getBoundingClientRect();
 		this.endX = e.x - rect.left;
 		this.endY = e.y - rect.top;
+		this.points.push({x: this.endX, y:this.endY});
 	}
 })
