@@ -3,6 +3,8 @@ var Line = Shape.extend({
 		this.base(x,y);
 	},
 	draw: function(context, e){
+		context.strokeStyle = this.color;
+		context.lineWidth = this.width;
 		context.beginPath();
 		context.moveTo(this.x, this.y);
 		context.lineTo(this.endX, this.endY);
