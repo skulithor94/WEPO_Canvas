@@ -12,6 +12,8 @@ $(document).ready(function(){
 	var font = "Arial";
 	var fontsize = "10px";
 	var text = "Halló heimur!";
+	var undoObject;
+
 
 	$("#fonts").change(function(){
 		font = $(this).val();
@@ -27,6 +29,23 @@ $(document).ready(function(){
 
 	$("#sizebar").change(function(){
 		width = $(this).val();
+	});
+
+	//These functions undo and redo provide only one level of undo/redo
+	//if the user removes two shapes he will only get the latter back
+	//by redoing.
+	$("#undoButton").click(function(){
+		undoObject = shapes.pop();
+		redraw();
+	});
+
+	$("#redoButton").click(function(){
+		if(undoObject !== undefined){
+			shapes.push(undoObject);
+			undoObject = undefined;
+			redraw();
+		}
+		console.log("redo");
 	});
 
 	var coloring = document.getElementById("ground"), 		
