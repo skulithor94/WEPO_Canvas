@@ -3,7 +3,7 @@ $(document).ready(function(){
 
 	var canvas = document.getElementById("myCanvas");
 	var context = canvas.getContext("2d");
-	var shapes = new Array();
+	var shapes = [];
 	var button = "penButton";
 	var isDown = false;
 	var boundingRect = canvas.getBoundingClientRect(); //Used to get correct cords for canvas.
@@ -13,6 +13,9 @@ $(document).ready(function(){
 	var fontsize = "10px";
 	var text = "Halló heimur!";
 	var undoObject;
+	var clearUndo = false;
+	var wasCleared = false;
+	var undoCanvas = [];
 
 
 	$("#fonts").change(function(){
@@ -35,18 +38,43 @@ $(document).ready(function(){
 	//if the user removes two shapes he will only get the latter back
 	//by redoing.
 	$("#undoButton").click(function(){
+		if(clearUndo && isCanvasBlank(canvas)){
+			shapes = undoCanvas;
+			redraw();
+			clearUndo = false;
+			wasCleared = true;
+			return;
+		}
+		wasCleared = false;
 		undoObject = shapes.pop();
 		redraw();
 	});
 
 	$("#redoButton").click(function(){
+		if(wasCleared){
+			clear();
+			wasCleared = false;
+		}
 		if(undoObject !== undefined){
 			shapes.push(undoObject);
 			undoObject = undefined;
 			redraw();
 		}
-		console.log("redo");
 	});
+
+	$("#clearButton").click(clear);
+
+	function clear(){
+		if(!isCanvasBlank(canvas)){
+			context.clearRect(0,0, context.canvas.width, context.canvas.height);
+			undoCanvas = shapes;
+			shapes = [];
+			clearUndo = true;
+		}
+	}
+
+
+
 
 	var coloring = document.getElementById("ground"), 		
 		rainbow = document.getElementById("rainbow");
@@ -101,6 +129,16 @@ $(document).ready(function(){
 		for (var i = 0; i < shapes.length; i++) {
 			shapes[i].draw(context);
 		};
+	}
+
+	//Function provided by user Austin Brunkhorst on
+	//http://stackoverflow.com/questions/17386707/how-to-check-if-a-canvas-is-blank
+	function isCanvasBlank(canvas) {
+    	var blank = document.createElement('canvas');
+    	blank.width = canvas.width;
+    	blank.height = canvas.height;
+
+    	return canvas.toDataURL() == blank.toDataURL();
 	}
 
 	//Function that returns the shape which corresponds to the button that is pressed.
