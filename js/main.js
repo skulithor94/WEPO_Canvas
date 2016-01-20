@@ -4,6 +4,7 @@ $(document).ready(function(){
 	var context = canvas.getContext("2d");
 	var shapes = [];
 	var button = "penButton";		//Default tool.
+	var buttonID;
 	var isDown = false;
 	var boundingRect = canvas.getBoundingClientRect(); //Used to get correct cords for canvas.
 	var color = "black";
@@ -73,7 +74,7 @@ $(document).ready(function(){
 		buttonID = $(this).attr('id');
 		buttonID = "#" + buttonID;
 
-		if(buttonID != "#color"){
+		if(tooglableButtons()){
 			$("#buttonMenu button").each(function(){
 			$(this).removeClass();
 			$(this).addClass('btn btn-default btn-lg');
@@ -84,6 +85,12 @@ $(document).ready(function(){
 
 	$("#clearButton").click(clear);
 
+	//Function is used to check if the button being clicked is
+	//a tool with which to draw. 
+	function tooglableButtons(){
+		return buttonID !== "#color" && buttonID !== "#undoButton" && buttonID !== "#redoButton" 
+			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton";
+	}
 	//Function that clears the whole canvas. The extra variables
 	//make it so the user can undo the clear. 
 	function clear(){
