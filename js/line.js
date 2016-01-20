@@ -1,6 +1,6 @@
 var Line = Shape.extend({
-	constructor: function(x,y){
-		this.base(x,y);
+	constructor: function(x,y, color, width){
+		this.base(x,y, color, width);
 	},
 	draw: function(context, e){
 		context.strokeStyle = this.color;
