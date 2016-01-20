@@ -46,6 +46,9 @@ $(document).ready(function(){
 			wasCleared = true;
 			return;
 		}
+		if (shapes.length <= 0) {
+			return;
+		};
 		wasCleared = false;
 		undoObject = shapes.pop();
 		redraw();
@@ -61,6 +64,21 @@ $(document).ready(function(){
 			undoObject = undefined;
 			redraw();
 			wasCleared = false;
+		}
+	});
+	
+	//Funtion that determines what tool the user wants to use.
+	$(".btn").click(function(){
+		buttonID = undefined;
+		buttonID = $(this).attr('id');
+		buttonID = "#" + buttonID;
+
+		if(buttonID != "#color"){
+			$("#buttonMenu button").each(function(){
+			$(this).removeClass();
+			$(this).addClass('btn btn-default btn-lg');
+			})
+			$(buttonID).addClass("btn btn-success btn-lg");
 		}
 	});
 
@@ -86,25 +104,15 @@ $(document).ready(function(){
 		rainbow.style.color = color;
 	}, false);
 
-	//Funtion that determines what tool the user wants to use.
-	$(".btn").click(function(){
-		buttonID = undefined;
-		buttonID = $(this).attr('id');
-		buttonID = "#" + buttonID;
-		
-		if(buttonID != "#color"){
-			$("#buttonMenu button").each(function(){
-			$(this).removeClass();
-			$(this).addClass('btn btn-default btn-lg');
-			})
-			$(buttonID).addClass("btn btn-success btn-lg");
-		}
-	});
+	function disableRedo(){
+		wasCleared = false;
+	};
 
 	//Function that handles drawing on the canvas.
 	//When user clicks on the canvas the shape object determines 
 	//what should be drawn.
 	canvas.onmousedown = function(evt){
+		disableRedo();
 		isDown = true;
 		var shape = getShape(evt);
 			canvas.onmousemove = function(evt){
