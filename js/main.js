@@ -6,7 +6,7 @@ $(document).ready(function(){
 	var shapes = new Array();
 	var button = "penButton";
 	var isDown = false;
-	var boundingRect = canvas.getBoundingClientRect();
+	var boundingRect = canvas.getBoundingClientRect(); //Used to get correct cords for canvas.
 	var color = "black";
 	var width = "1";
 	var font = "Arial";
@@ -16,6 +16,7 @@ $(document).ready(function(){
 	$("#fonts").change(function(){
 		font = $(this).val();
 	});
+
 	$("#fontsize").change(function(){
 		fontsize = $(this).val();
 	});
@@ -24,20 +25,20 @@ $(document).ready(function(){
 		text = $(this).val();
 	});
 
-
 	$("#sizebar").change(function(){
 		width = $(this).val();
 	});
 
 	var coloring = document.getElementById("ground"), 		
 		rainbow = document.getElementById("rainbow");
+
 	coloring.addEventListener("input", function(){
 		color = coloring.value;
 		rainbow.style.color = color;
 	}, false);
 
 
-	//funtion that determines what tool the user wants to use
+	//Funtion that determines what tool the user wants to use.
 	$(".btn").click(function(){
 		buttonID = undefined;
 		buttonID = $(this).attr('id');
@@ -51,6 +52,9 @@ $(document).ready(function(){
 		}
 	});
 
+	//Function that handles drawing on the canvas.
+	//When user clicks on the canvas the shape object determines 
+	//what should be drawn.
 	canvas.onmousedown = function(evt){
 		isDown = true;
 		var shape = getShape(evt);
@@ -71,6 +75,8 @@ $(document).ready(function(){
 		redraw();
 	};
 
+	//Function that clears the whole canvas and draws all the shapes again:
+	//Used so only one instance of each object is seen while drawing, not all of them.
 	redraw = function(){
 		context.clearRect(0,0, context.canvas.width, context.canvas.height);
 		for (var i = 0; i < shapes.length; i++) {
@@ -78,10 +84,11 @@ $(document).ready(function(){
 		};
 	}
 
+	//Function that returns the shape which corresponds to the button that is pressed.
 	getShape = function(evt){
 		button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
 		if (button === "rectButton"){
-		 	return shape = new Rectangle(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
+		 	return new Rectangle(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else if(button === "circleButton"){
 			return new Circle(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else if(button === "lineButton"){
