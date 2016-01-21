@@ -85,11 +85,24 @@ $(document).ready(function(){
 
 	$("#clearButton").click(clear);
 
+	$("#saveButton").click(function(){
+		$("#saveModal").modal('show');
+	});
+
+	//Code from http://stackoverflow.com/questions/10673122/how-to-save-canvas-as-an-image-with-canvas-todataurl
+	//and http://stackoverflow.com/questions/12796513/html5-canvas-to-png-file
+	//user1874941 and Nippey
+	$("#localSaveButton").click(function(){
+		var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+		this.href = image;
+	});
+
 	//Function is used to check if the button being clicked is
 	//a tool with which to draw. 
 	function tooglableButtons(){
 		return buttonID !== "#color" && buttonID !== "#undoButton" && buttonID !== "#redoButton" 
-			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton";
+			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton"
+			&& buttonID !== "#localSaveButton" && buttonID !== "#cloudSaveButton";
 	}
 	//Function that clears the whole canvas. The extra variables
 	//make it so the user can undo the clear. 
