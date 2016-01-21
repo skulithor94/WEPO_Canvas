@@ -19,6 +19,7 @@
 	<script src="js/circle.js"></script>
 	<script src="js/pen.js"></script>
 	<script src="js/font.js"></script>
+	<script src="js/saveLoad.js"></script>
 	<script src="js/main.js"></script>
 	<div id="buttonMenu" style="float:left; height: 480px">
 		<button id="penButton" type="button" class="btn btn-success btn-lg" style="display: block; border-radius: 0px;" >
@@ -113,6 +114,27 @@
 				<div class="modal-footer">
 				<a href="#"id="localSaveButton" role="button" class="btn btn-info" download="Canvas.png">Local Save</a>
 				<button id="cloudSaveButton" type="button" class="btn btn-info">Cloud Save</button>
+					<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+		<!-- Modal from http://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
+	<div id="loadModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Modal Header</h4>
+				</div>
+				<div class="modal-body">
+					<p>Here you can load images from the cloud or local storage.</p>
+				</div>
+				<div class="modal-footer">
+				<a href="#"id="localSaveButton" role="button" class="btn btn-info" download="Canvas.png">Load From Local</a>
+				<button id="cloudSaveButton" type="button" class="btn btn-info">Load From Cloud</button>
 					<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
 				</div>
 			</div>
