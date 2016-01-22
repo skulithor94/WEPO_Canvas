@@ -1,8 +1,9 @@
+	var shapes = [];
 $(document).ready(function(){
 
 	var canvas = document.getElementById("myCanvas");
 	var context = canvas.getContext("2d");
-	var shapes = [];
+
 	var button = "penButton";		//Default tool.
 	var buttonID;
 	var isDown = false;
@@ -90,7 +91,8 @@ $(document).ready(function(){
 	function tooglableButtons(){
 		return buttonID !== "#color" && buttonID !== "#undoButton" && buttonID !== "#redoButton" 
 			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton"
-			&& buttonID !== "#localSaveButton" && buttonID !== "#cloudSaveButton";
+			&& buttonID !== "#localSaveButton" && buttonID !== "#cloudSaveButton" && buttonID !== "#localLoadButton"
+			&& buttonID !== "#cloudLoadButton";
 	}
 	//Function that clears the whole canvas. The extra variables
 	//make it so the user can undo the clear. 
@@ -147,6 +149,7 @@ $(document).ready(function(){
 		for (var i = 0; i < shapes.length; i++) {
 			shapes[i].draw(context);
 		};
+		console.log(shapes);
 	}
 
 	//Function provided by user Austin Brunkhorst on

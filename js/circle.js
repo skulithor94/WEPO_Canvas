@@ -3,6 +3,12 @@ var Circle = Shape.extend({
 		this.base(x, y, color, width);
 		this.radius = 0;
 	},
+	constructor: function(x, y, endX, endY, color, width, radius){
+		this.base(x, y, color, width);
+		this.endX = endX;
+		this.endY = endY;
+		this.radius = radius;
+	},
 	draw: function(context, e){
 		context.strokeStyle = this.color;
 		context.lineWidth = this.width;
@@ -15,6 +21,6 @@ var Circle = Shape.extend({
 		var rect = canvas.getBoundingClientRect();
 		this.endX = e.x - rect.left;
 		this.endY = e.y - rect.top;
-		this.radius = Math.sqrt(((this.endX - this.x)^2) + ((this.endY-this.y)^2));
+		this.radius = Math.sqrt(Math.abs(((this.endX - this.x)^2)) + Math.abs(((this.endY-this.y)^2)));
 	}
 });

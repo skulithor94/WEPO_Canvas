@@ -13,9 +13,84 @@ $(document).ready(function(){
 		this.href = image;
 	});
 
+	$("#cloudSaveButton").click(function(){
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		//var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+		var userId = $("#userIdInput").val();
+		var pictureTitle = $("#pictureTitleInput").val();
+		var checkbox = false;
+		console.log(shapes);
+		imageData = JSON.stringify(shapes);
+
+		if ($("#templateCheckbox").is(':checked')) {
+			checkbox = true;
+		}else{
+			checkbox = false;
+		}
+
+		var param = { "user": userId, 
+				"name": pictureTitle,
+				"content": imageData,
+				"template": checkbox
+		};
+
+		$.ajax({
+				type: "POST",
+				contentType: "application/json; charset=utf-8",
+				url: "http://whiteboard.apphb.com/Home/Save",
+				data: param,
+				dataType: "jsonp",
+				crossDomain: true,
+				success: function (data) {
+					console.log("Save successful!");
+				},
+				error: function (xhr, err) {
+					console.log("error");
+					alert("Something went wrong! " + err);
+				}
+		});
+	});
+
+	$("#cloudLoadButton").click(function(){
+		/*$.get( "http://whiteboard.apphb.com/Home/GetList", { user: "skuli14", template: false } )
+  			.done(function( data ) {
+    		alert( "Data Loaded: " + data );
+  		});*/
+
+	$.ajax({
+		type: "GET",
+		url: "http://whiteboard.apphb.com/Home/GetWhiteboard",
+		dataType: "jsonp",
+		crossDomain: true,
+		data: { id: "3574" }//{ user: "skuli14", template: false }
+	}).done(function(data){
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var tempShapes = data.WhiteboardContents;
+		console.log(tempShapes);
+		console.log(tempShapes.length);
+		for (var i = 0; i < tempShapes.length; i++) {
+			shapes.push(new Circle(tempShapes[i].x, tempShapes[i].y, tempShapes[i].endX, tempShapes[i].endY,
+								tempShapes[i].color, tempShapes[i].width, tempShapes[i].radius));
+		}
+		console.log(shapes);
+	});
+
+
+	});
+
 	//Loading images
 	$("#loadButton").click(function(){
 		$("#loadModal").modal('show');
+	});
+
+	$("input[type=file]").on('change', function(){
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		console.log("file ready");
+		var image = event.target.files[0];
+		context.drawImage(image, 0, 0);
 	});
 
 })
