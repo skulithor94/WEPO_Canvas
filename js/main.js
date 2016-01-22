@@ -28,13 +28,18 @@ $(document).ready(function(){
 		fontsize = $(this).val();
 	});
 
-	$("#typo").change(function(){
-		text = $(this).val();
-	});
+	$("#typo").on("keydown",function gettext(e) {
+    	if(e.keyCode == 13) {
+        	text = $(this).val();
+        	document.getElementById("typo").style.display = "none";
+		}
+	});	
 
 	$("#sizebar").change(function(){
 		width = $(this).val();
 	});
+
+
 
 	//These functions undo and redo provide only one level of undo/redo
 	//if the user removes two shapes he will only get the latter back
@@ -89,7 +94,8 @@ $(document).ready(function(){
 	//a tool with which to draw. 
 	function tooglableButtons(){
 		return buttonID !== "#color" && buttonID !== "#undoButton" && buttonID !== "#redoButton" 
-			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton";
+			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton" 
+			&& buttonID !== "#sizedrop";
 	}
 	//Function that clears the whole canvas. The extra variables
 	//make it so the user can undo the clear. 
@@ -175,3 +181,6 @@ $(document).ready(function(){
 		}
 	}
 })
+
+
+	

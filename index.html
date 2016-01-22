@@ -3,7 +3,7 @@
         <meta charset="utf-8">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Untitled</title>
+        <title>DrAwMaTiC DiMaNtIoN</title>
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <link rel="author" href="humans.txt">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -60,8 +60,11 @@
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </button>
         </div>
+        
         <div id="divcanvas">
-            <canvas id="myCanvas" width="800" height="480" style="border:1px solid"></canvas>
+            <canvas id="myCanvas" width="800" height="480" style="border:1px solid; cursor:crosshair">
+                <h1>Your browser does not support the HTML5 canvas tag.</h1>
+            </canvas>
         </div>
         <div id="well" class="well">
             <span id="innerwell"class="well">
@@ -90,10 +93,9 @@
                     <option value="sans-serif">sans-serif</option>
                 </select>
             </span>
-            <span id="innerwell" class="well">
-                <label>Text:</label>
-                <input id="typo" type="text" class="form-control" placeholder="Halló heimur!">
-            </span>
+            
+            <input id="typo" type="text" class="form-control" placeholder="Halló heimur!" style="display: none">
+     
         </div>
     </body>
 </html>
