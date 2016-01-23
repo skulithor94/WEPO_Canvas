@@ -53,10 +53,6 @@ $(document).ready(function(){
 	});
 
 	$("#cloudLoadButton").click(function(){
-		/*$.get( "http://whiteboard.apphb.com/Home/GetList", { user: "skuli14", template: false } )
-  			.done(function( data ) {
-    		alert( "Data Loaded: " + data );
-  		});*/
 
 	$.ajax({
 		type: "GET",
@@ -68,12 +64,16 @@ $(document).ready(function(){
 		var canvas = document.getElementById("myCanvas");
 		var context = canvas.getContext("2d");
 		var tempShapes = data.WhiteboardContents;
+		tempShapes = JSON.parse(tempShapes);
 		console.log(tempShapes);
 		console.log(tempShapes.length);
+		console.log(tempShapes[0]);
 		for (var i = 0; i < tempShapes.length; i++) {
 			shapes.push(new Circle(tempShapes[i].x, tempShapes[i].y, tempShapes[i].endX, tempShapes[i].endY,
 								tempShapes[i].color, tempShapes[i].width, tempShapes[i].radius));
+			shapes[i].draw(context);
 		}
+
 		console.log(shapes);
 	});
 
