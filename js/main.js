@@ -95,7 +95,7 @@ $(document).ready(function(){
 	function tooglableButtons(){
 		return buttonID !== "#color" && buttonID !== "#undoButton" && buttonID !== "#redoButton" 
 			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton" 
-			&& buttonID !== "#sizedrop";
+			&& buttonID !== "#sizedrop" && buttonID !== "#settingsButton";
 	}
 	//Function that clears the whole canvas. The extra variables
 	//make it so the user can undo the clear. 
@@ -182,5 +182,7 @@ $(document).ready(function(){
 	}
 })
 
-
+function openDropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}   
 	
