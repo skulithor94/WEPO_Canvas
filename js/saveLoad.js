@@ -20,7 +20,9 @@ $(document).ready(function(){
 		var userId = $("#userIdInput").val();
 		var pictureTitle = $("#pictureTitleInput").val();
 		var checkbox = false;
+
 		console.log(shapes);
+
 		imageData = JSON.stringify(shapes);
 
 		if ($("#templateCheckbox").is(':checked')) {
@@ -53,38 +55,81 @@ $(document).ready(function(){
 	});
 
 	$("#cloudLoadButton").click(function(){
+		var userId = $("#userIdInputForLoad").val();
+		var checkbox = false;
 
-	$.ajax({
-		type: "GET",
-		url: "http://whiteboard.apphb.com/Home/GetWhiteboard",
-		dataType: "jsonp",
-		crossDomain: true,
-		data: { id: "3574" }//{ user: "skuli14", template: false }
-	}).done(function(data){
-		var canvas = document.getElementById("myCanvas");
-		var context = canvas.getContext("2d");
-		var tempShapes = data.WhiteboardContents;
-		tempShapes = JSON.parse(tempShapes);
-		console.log(tempShapes);
-		console.log(tempShapes.length);
-		console.log(tempShapes[0]);
-		for (var i = 0; i < tempShapes.length; i++) {
-			shapes.push(new Circle(tempShapes[i].x, tempShapes[i].y, tempShapes[i].endX, tempShapes[i].endY,
-								tempShapes[i].color, tempShapes[i].width, tempShapes[i].radius));
-			shapes[i].draw(context);
+		if ($("#templateCheckboxForLoad").is(':checked')) {
+			checkbox = true;
+		}else{
+			checkbox = false;
 		}
 
-		console.log(shapes);
+		var param = { "user": userId, 
+				"template": checkbox
+		};
+
+		$.ajax({
+			type: "GET",
+			url: "http://whiteboard.apphb.com/Home/GetList",
+			dataType: "jsonp",
+			crossDomain: true,
+			data: param
+		}).done(function(data){
+			var $modal = $("#modalBodyLoad");
+			$modal.empty();
+			$modal.append("<ol></ol>");
+			for (var i = 0; i < data.length; i++) {
+				$("#modalBodyLoad ol").append("<li><a data-id='" + data[i].ID + "' data-user='" + userId + "'>ID: " + data[i].ID + " Name: " + data[i].WhiteboardTitle + "</a></li>");
+			};
+		});
 	});
 
+	$(document).on('click', '#modalBodyLoad ol li a', function(evt){
 
+		var ID = $(this).attr("data-id");
+		$.ajax({
+			type: "GET",
+			url: "http://whiteboard.apphb.com/Home/GetWhiteboard",
+			dataType: "jsonp",
+			crossDomain: true,
+			data: { id: ID }
+		}).done(function(data){
+			var canvas = document.getElementById("myCanvas");
+			var context = canvas.getContext("2d");
+			var tempShapes = data.WhiteboardContents;
+			tempShapes = JSON.parse(tempShapes);
+			console.log(tempShapes);
+			console.log(tempShapes.length);
+			console.log(tempShapes[0]);
+			for (var i = 0; i < tempShapes.length; i++) {
+				shapes.push(getShapeByName(tempShapes[i]));
+			}
+			for (var i = 0; i < shapes.length; i++) {
+				shapes[i].draw(context);
+			};
+			$("#loadModal").modal('hide');
+		});
 	});
 
+	function getShapeByName(arrayEntry){
+		if (arrayEntry.name === "Rectangle"){
+		 	return new Rectangle("Rectangle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width);
+		}else if(arrayEntry.name === "Circle"){
+			return new Circle("Circle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.radius);
+		}else if(arrayEntry.name === "Line"){
+			return new Line("Line", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width);
+		}else if(arrayEntry.name === "Text"){
+			//TODO: FIX THIS, ÞETTA ER EKKI RÉTT, Á AÐ VERA EINS OG HIN!!
+			return new Font("Text", evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + ' ' + font, text);
+		}else{
+			return new Pen("Pen", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.points);
+		}
+	}
 	//Loading images
 	$("#loadButton").click(function(){
 		$("#loadModal").modal('show');
 	});
-
+	//TODO: FIX THIS!
 	$("input[type=file]").on('change', function(){
 		var canvas = document.getElementById("myCanvas");
 		var context = canvas.getContext("2d");

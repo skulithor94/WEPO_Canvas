@@ -1,9 +1,17 @@
 var Pen = Shape.extend({
-	constructor: function(x,y, color, width){
-		this.base(x,y, color, width);
+	constructor: function(name, x, y, color, width){
+		this.base(name, x, y, color, width);
 		this.tempX = x;
 		this.tempY = y;
 		this.points = [{x: x, y: y}];
+	},
+	constructor: function(name, x, y, endX, endY, color, width, points){
+		this.base(name, x, y, color, width);
+		this.tempX = x;
+		this.tempY = y;
+		this.endX = endX;
+		this.endY = endY;
+		this.points = points;
 	},
 	draw: function(context, e){
 

@@ -149,7 +149,7 @@ $(document).ready(function(){
 		for (var i = 0; i < shapes.length; i++) {
 			shapes[i].draw(context);
 		};
-		console.log(shapes);
+		//console.log(shapes);
 	}
 
 	//Function provided by user Austin Brunkhorst on
@@ -165,17 +165,19 @@ $(document).ready(function(){
 	//Function that returns the shape which corresponds to the button that is pressed.
 	function getShape(evt) {
 		button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
-
+		var tempX = evt.x - boundingRect.left;
+		var tempY = evt.y - boundingRect.top;
 		if (button === "rectButton"){
-		 	return new Rectangle(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
+		 	return new Rectangle("Rectangle", tempX, tempY, tempX, tempY, color, width);
 		}else if(button === "circleButton"){
-			return new Circle(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
+			return new Circle("Circle", tempX, tempY, tempX, tempY, color, width, 0);
 		}else if(button === "lineButton"){
-			return new Line(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
+			return new Line("Line", tempX, tempY, tempX, tempY, color, width);
 		}else if(button === "textButton"){
-			return new Font(evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + ' ' + font, text);
+			//TODO: ÞAÐ ÞARF AÐ LAGA ÞETTA ÞEGAR VILLI ER BÚINN!!
+			return new Font("Text", evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + ' ' + font, text);
 		}else{
-			return new Pen(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
+			return new Pen("Pen", tempX, tempY, tempX, tempY, color, width, [{x: tempX, y: tempY}]);
 		}
 	}
 })

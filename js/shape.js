@@ -1,5 +1,6 @@
 var Shape = Base.extend({
-	constructor: function(x,y, color, width, text){
+	constructor: function(name, x, y, color, width, text){
+		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.endX = x;

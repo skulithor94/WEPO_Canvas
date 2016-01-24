@@ -1,6 +1,11 @@
 var Rectangle = Shape.extend({
-	constructor: function(x, y, color, width){
-		this.base(x,y, color, width);
+	constructor: function(name, x, y, color, width){
+		this.base(name, x, y, color, width);
+	},
+	constructor: function(name, x, y, endX, endY, color, width){
+		this.base(name, x, y, color, width);
+		this.endX = endX;
+		this.endY = endY;
 	},
 	draw: function(context, e){
 		if(this.x === this.endX && this.y === this.endY){
