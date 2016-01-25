@@ -14,8 +14,8 @@ var Font = Shape.extend({
 	},
 	texting: function(context, e){
 		var inputtext = document.getElementById("typo");
-		inputtext.style.left = this.x + "px";
-    	inputtext.style.top = this.y + "px";
+		inputtext.style.left = this.x + 50 + "px";
+    	inputtext.style.top = this.y - 30 + "px";
     	inputtext.style.display = "inline-block";
     	inputtext.focus();
 	}
