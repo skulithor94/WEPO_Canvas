@@ -11,11 +11,11 @@ $(document).ready(function(){
 	var width = "1";
 	var font = "Arial";
 	var fontsize = "10px";
-	var text = "Halló heimur!";
+	var text = "";
 	var undoObject; 				//An object is kept in this variable if it is undone.
 	var hasBeenCleared = false;		//Used in functions to tell if canvas has been cleared.
 	var wasCleared = false;			//Used to tell if the whole canvas was cleared before last undo operation.
-
+	var textisvalid = false;
 	//If the user clears the canvas all objects are stored here
 	//so the user can undo the clear and get back his work.
 	var undoCanvas = [];			
@@ -30,10 +30,25 @@ $(document).ready(function(){
 
 	$("#typo").on("keydown",function gettext(e) {
     	if(e.keyCode == 13) {
-        	text = $(this).val();
-        	document.getElementById("typo").style.display = "none";
+    		var textid = document.getElementById("typo");
+        	text = textid.value;
+        	textid.value = "";
+        	textid.style.display = "none";
+        	textid.focus();
+        	
+        	var foo = shapes[shapes.length - 1];
+        	shapes.pop();
+        	var shape = getShape(e);
+        	shape.x = foo.x;
+        	shape.y = foo.y;
+        	/*x,y, color, width, text*/
+        	shape.draw(context);
+			shapes.push(shape);
+			text = "";
+			redraw();
 		}
 	});	
+
 
 	$("#sizebar").change(function(){
 		width = $(this).val();
@@ -128,20 +143,33 @@ $(document).ready(function(){
 		disableRedo();
 		isDown = true;
 		var shape = getShape(evt);
+		var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
+		
 			canvas.onmousemove = function(evt){
 				if(!isDown){
 					return;
 				}
 				shape.drawing(canvas, evt);
 				redraw();
-				shape.draw(context);
+				if(button == "textButton"){
+					shape.texting(context);
+				}
+				else{
+					shape.draw(context);
+				}
 			}
 			canvas.onmouseup = function(evt){
 				isDown = false;
-				shape.draw(context);
+				if(button == "textButton"){
+					shape.texting(context);
+				}
+				else{
+					shape.draw(context);
+				}
 				shapes.push(shape);
 				redraw();
 			}
+			
 		redraw();
 	};
 
