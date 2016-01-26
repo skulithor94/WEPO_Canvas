@@ -120,7 +120,7 @@ $(document).ready(function(){
 			return new Line("Line", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width);
 		}else if(arrayEntry.name === "Text"){
 			//TODO: FIX THIS, ÞETTA ER EKKI RÉTT, Á AÐ VERA EINS OG HIN!!
-			return new Font("Text", evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + ' ' + font, text);
+			return new Font("Text", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.text);
 		}else{
 			return new Pen("Pen", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.points);
 		}

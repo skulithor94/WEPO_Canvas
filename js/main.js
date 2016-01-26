@@ -36,8 +36,8 @@ $(document).ready(function(){
         	textid.value = "";
         	textid.style.display = "none";
         	
-        	var foo = shapes[shapes.length - 1];
-        	shapes.pop();
+        	//var foo = shapes[shapes.length - 1];
+        	var foo = shapes.pop();
         	var shape = getShape(e);
         	shape.x = foo.x;
         	shape.y = foo.y;
@@ -211,7 +211,7 @@ $(document).ready(function(){
 		}else if(button === "lineButton"){
 			return new Line("Line", tempX, tempY, tempX, tempY, color, width);
 		}else if(button === "textButton"){
-			return new Font("Text", evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + 'px' + ' ' + font, text);
+			return new Font("Text", tempX, tempY, tempX, tempY, color, fontsize + 'px' + ' ' + font, text);
 		}else{
 			return new Pen("Pen", tempX, tempY, tempX, tempY, color, width, [{x: tempX, y: tempY}]);
 		}

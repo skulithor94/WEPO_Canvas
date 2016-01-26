@@ -1,6 +1,11 @@
 var Font = Shape.extend({
 	constructor: function(name, x, y, color, width, text){
-		this.base(name, x, y, color, width, text);
+		this.base(name, x, y, color, width);
+		this.text = text;
+	},
+	constructor: function(name, x, y, endX, endY, color, width, text){
+		this.base(name, x, y, endX, endY, color, width);
+		this.text = text;
 	},
 	draw: function(context, e){
 		context.fillStyle = this.color;
