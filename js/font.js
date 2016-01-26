@@ -3,7 +3,6 @@ var Font = Shape.extend({
 		this.base(name, x, y, color, width, text);
 	},
 	draw: function(context, e){
-		context.beginPath();
 		context.fillStyle = this.color;
 		context.font = this.width;
 		context.fillText(this.text, this.x, this.y);
@@ -12,5 +11,14 @@ var Font = Shape.extend({
 	},
 	drawing: function(canvas, e){
 
+	},
+	texting: function(context, e){
+		var inputtext = document.getElementById("typo");
+		inputtext.style.left = this.x + 45 + "px";
+    	inputtext.style.top = this.y - 10 - document.getElementById("fontsize").value + "px";
+    	inputtext.style.display = "inline-block";
+    	inputtext.style.fontFamily = document.getElementById("fonts").value;
+    	inputtext.style.fontSize = document.getElementById("fontsize").value;
+    	inputtext.focus();
 	}
 })

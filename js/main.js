@@ -11,12 +11,12 @@ $(document).ready(function(){
 	var color = "black";
 	var width = "1";
 	var font = "Arial";
-	var fontsize = "10px";
-	var text = "Halló heimur!";
+	var fontsize = "10";
+	var text = "";
 	var undoObject; 				//An object is kept in this variable if it is undone.
 	var hasBeenCleared = false;		//Used in functions to tell if canvas has been cleared.
 	var wasCleared = false;			//Used to tell if the whole canvas was cleared before last undo operation.
-
+	var textisvalid = false;
 	//If the user clears the canvas all objects are stored here
 	//so the user can undo the clear and get back his work.
 	var undoCanvas = [];			
@@ -29,13 +29,37 @@ $(document).ready(function(){
 		fontsize = $(this).val();
 	});
 
-	$("#typo").change(function(){
-		text = $(this).val();
+	$("#typo").on("keydown",function gettext(e) {
+    	if(e.keyCode == 13) {
+    		var textid = document.getElementById("typo");
+        	text = textid.value;
+        	textid.value = "";
+        	textid.style.display = "none";
+        	
+        	var foo = shapes[shapes.length - 1];
+        	shapes.pop();
+        	var shape = getShape(e);
+        	shape.x = foo.x;
+        	shape.y = foo.y;
+        	/*x,y, color, width, text*/
+        	shape.draw(context);
+			shapes.push(shape);
+			text = "";
+			redraw();
+		}
+	});	
+
+	$("#typo").keyup(function(){
+		$(this).height("auto");
+		$(this).width("auto");
 	});
+
 
 	$("#sizebar").change(function(){
 		width = $(this).val();
 	});
+
+
 
 	//These functions undo and redo provide only one level of undo/redo
 	//if the user removes two shapes he will only get the latter back
@@ -92,7 +116,7 @@ $(document).ready(function(){
 		return buttonID !== "#color" && buttonID !== "#undoButton" && buttonID !== "#redoButton" 
 			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton"
 			&& buttonID !== "#localSaveButton" && buttonID !== "#cloudSaveButton" && buttonID !== "#localLoadButton"
-			&& buttonID !== "#cloudLoadButton";
+			&& buttonID !== "#cloudLoadButton" 	&& buttonID !== "#sizedrop" && buttonID !== "#settingsButton";
 	}
 	//Function that clears the whole canvas. The extra variables
 	//make it so the user can undo the clear. 
@@ -125,20 +149,33 @@ $(document).ready(function(){
 		disableRedo();
 		isDown = true;
 		var shape = getShape(evt);
+		var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
+		
 			canvas.onmousemove = function(evt){
 				if(!isDown){
 					return;
 				}
 				shape.drawing(canvas, evt);
 				redraw();
-				shape.draw(context);
+				if(button == "textButton"){
+					shape.texting(context);
+				}
+				else{
+					shape.draw(context);
+				}
 			}
 			canvas.onmouseup = function(evt){
 				isDown = false;
-				shape.draw(context);
+				if(button == "textButton"){
+					shape.texting(context);
+				}
+				else{
+					shape.draw(context);
+				}
 				shapes.push(shape);
 				redraw();
 			}
+			
 		redraw();
 	};
 
@@ -174,10 +211,14 @@ $(document).ready(function(){
 		}else if(button === "lineButton"){
 			return new Line("Line", tempX, tempY, tempX, tempY, color, width);
 		}else if(button === "textButton"){
-			//TODO: ÞAÐ ÞARF AÐ LAGA ÞETTA ÞEGAR VILLI ER BÚINN!!
-			return new Font("Text", evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + ' ' + font, text);
+			return new Font("Text", evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + 'px' + ' ' + font, text);
 		}else{
 			return new Pen("Pen", tempX, tempY, tempX, tempY, color, width, [{x: tempX, y: tempY}]);
 		}
 	}
 })
+
+function openDropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}   
+	
