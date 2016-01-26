@@ -10,7 +10,7 @@ $(document).ready(function(){
 	var color = "black";
 	var width = "1";
 	var font = "Arial";
-	var fontsize = "10px";
+	var fontsize = "10";
 	var text = "";
 	var undoObject; 				//An object is kept in this variable if it is undone.
 	var hasBeenCleared = false;		//Used in functions to tell if canvas has been cleared.
@@ -34,7 +34,6 @@ $(document).ready(function(){
         	text = textid.value;
         	textid.value = "";
         	textid.style.display = "none";
-        	textid.focus();
         	
         	var foo = shapes[shapes.length - 1];
         	shapes.pop();
@@ -48,6 +47,11 @@ $(document).ready(function(){
 			redraw();
 		}
 	});	
+
+	$("#typo").keyup(function(){
+		$(this).height("auto");
+		$(this).width("auto");
+	});
 
 
 	$("#sizebar").change(function(){
@@ -203,7 +207,7 @@ $(document).ready(function(){
 		}else if(button === "lineButton"){
 			return new Line(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else if(button === "textButton"){
-			return new Font(evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + ' ' + font, text);
+			return new Font(evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + 'px' + ' ' + font, text);
 		}else{
 			return new Pen(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}
