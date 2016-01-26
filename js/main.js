@@ -175,6 +175,20 @@ $(document).ready(function(){
 				shapes.push(shape);
 				redraw();
 			}
+			canvas.onmouseout = function(evt){
+				isDown = false;
+				if(button == "textButton"){
+					var textid = document.getElementById("typo");
+		        	text = textid.value;
+		        	textid.value = "";
+		        	textid.style.display = "none";
+				}
+				else{
+					shape.draw(context);
+				}
+				shapes.push(shape);
+				redraw();
+			}
 			
 		redraw();
 	};
