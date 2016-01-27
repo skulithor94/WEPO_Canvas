@@ -39,10 +39,17 @@ $(document).ready(function(){
         	textid.value = "";
         	textid.style.display = "none";
         	
-        	var foo = shapes.pop();
+        	var temp = shapes[shapes.length -1];
+        	console.log("temp:");
+        	console.log(temp);
+        	shapes.pop();
         	var shape = getShape(e);
-        	shape.x = foo.x;
-        	shape.y = foo.y;
+        	console.log("shape: ");
+        	console.log(shape);
+        	shape.x = temp.x;
+        	shape.y = temp.y;
+        	shape.width = temp.width;
+        	shape.color = temp.color;
         	/*x,y, color, width, text*/
         	shape.draw(context);
 			shapes.push(shape);
@@ -154,7 +161,7 @@ $(document).ready(function(){
 		var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
 		
 			canvas.onmousemove = function(evt){
-				if(!isDown){
+				if(!isDown && !isOut){
 					return;
 				}
 				shape.drawing(canvas, evt);
@@ -180,21 +187,12 @@ $(document).ready(function(){
 				shapes.push(shape);
 				redraw();
 			}
-			canvas.onmouseout = function(evt){
-				isDown = false;
-				isOut = true;
-				
-					shape.draw(context);
-				shapes.push(shape);
-				redraw();
-			}
 			textid.onmouseout = function(evt){
-				isDown = false;
+		
 				text = textid.value;
 		        textid.value = "";
 		       	textid.style.display = "none";
-		       	shapes.push(shape);
-				redraw();
+		    	shapes.pop();
 			}
 			
 		redraw();
@@ -232,7 +230,7 @@ $(document).ready(function(){
 		}else if(button === "lineButton"){
 			return new Line("Line", tempX, tempY, tempX, tempY, color, width);
 		}else if(button === "textButton"){
-			return new Font("Text", tempX, tempY, tempX, tempY, color, fontsize + 'px' + ' ' + font, text);
+			return new Font("Text", tempX, tempY, tempX, tempY, color, fontsize + 'px ' + font, text);
 		}else{
 			return new Pen("Pen", tempX, tempY, tempX, tempY, color, width, [{x: tempX, y: tempY}]);
 		}
