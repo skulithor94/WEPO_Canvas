@@ -10,12 +10,12 @@ $(document).ready(function(){
 	var color = "black";
 	var width = "1";
 	var font = "Arial";
-	var fontsize = "10px";
-	var text = "Halló heimur!";
+	var fontsize = "10";
+	var text = "";
 	var undoObject; 				//An object is kept in this variable if it is undone.
 	var hasBeenCleared = false;		//Used in functions to tell if canvas has been cleared.
 	var wasCleared = false;			//Used to tell if the whole canvas was cleared before last undo operation.
-
+	var textisvalid = false;
 	//If the user clears the canvas all objects are stored here
 	//so the user can undo the clear and get back his work.
 	var undoCanvas = [];			
@@ -30,10 +30,29 @@ $(document).ready(function(){
 
 	$("#typo").on("keydown",function gettext(e) {
     	if(e.keyCode == 13) {
-        	text = $(this).val();
-        	document.getElementById("typo").style.display = "none";
+    		var textid = document.getElementById("typo");
+        	text = textid.value;
+        	textid.value = "";
+        	textid.style.display = "none";
+        	
+        	var foo = shapes[shapes.length - 1];
+        	shapes.pop();
+        	var shape = getShape(e);
+        	shape.x = foo.x;
+        	shape.y = foo.y;
+        	/*x,y, color, width, text*/
+        	shape.draw(context);
+			shapes.push(shape);
+			text = "";
+			redraw();
 		}
 	});	
+
+	$("#typo").keyup(function(){
+		$(this).height("auto");
+		$(this).width("auto");
+	});
+
 
 	$("#sizebar").change(function(){
 		width = $(this).val();
@@ -95,7 +114,7 @@ $(document).ready(function(){
 	function tooglableButtons(){
 		return buttonID !== "#color" && buttonID !== "#undoButton" && buttonID !== "#redoButton" 
 			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton" 
-			&& buttonID !== "#sizedrop";
+			&& buttonID !== "#sizedrop" && buttonID !== "#settingsButton";
 	}
 	//Function that clears the whole canvas. The extra variables
 	//make it so the user can undo the clear. 
@@ -125,9 +144,10 @@ $(document).ready(function(){
 	//When user clicks on the canvas the shape object determines 
 	//what should be drawn.
 	canvas.onmousedown = function(evt){
-		button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
 		disableRedo();
 		isDown = true;
+		var shape = getShape(evt);
+		var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
 
 		if(button === "selectButton"){
 			var target;
@@ -139,6 +159,8 @@ $(document).ready(function(){
 			}
 			console.log(target);
 			var point = {x: evt.x, y: evt.y};
+
+		
 			canvas.onmousemove = function(evt){
 				if(!isDown || !target){
 					return;
@@ -149,6 +171,7 @@ $(document).ready(function(){
 				point.y = evt.y;
 				target.move(deltaX, deltaY);
 				redraw();
+
 			}
 			canvas.onmouseup = function(evt){
 				isDown = false;
@@ -163,18 +186,28 @@ $(document).ready(function(){
 					}
 					shape.drawing(canvas, evt);
 					redraw();
+				if(button == "textButton"){
+					shape.texting(context);
+				}
+				else{
 					shape.draw(context);
 				}
-				canvas.onmouseup = function(evt){
-					isDown = false;
-					shape.draw(context);
-					shapes.push(shape);
-					redraw();
+			}
+			canvas.onmouseup = function(evt){
+				isDown = false;
+				if(button == "textButton"){
+					shape.texting(context);
 				}
+				else{
+					shape.draw(context);
+				}
+				shapes.push(shape);
 				redraw();
 			}
-		
-	};
+			
+		redraw();
+	}
+}
 
 	//Function that clears the whole canvas and draws all the shapes again:
 	//Used so only one instance of each object is seen while drawing, not all of them.
@@ -206,12 +239,14 @@ $(document).ready(function(){
 		}else if(button === "lineButton"){
 			return new Line(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else if(button === "textButton"){
-			return new Font(evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + ' ' + font, text);
-		}else{			
+			return new Font(evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + 'px' + ' ' + font, text);
+		}else{
 			return new Pen(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}
 	}
 })
 
-
+function openDropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}   
 	

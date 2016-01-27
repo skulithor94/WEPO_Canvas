@@ -59,43 +59,48 @@
             <button id="clearButton" type="button" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </button>
+            <!--Dropdown button-->
+            <button id="settingsButton" onclick="openDropdown()" class="btn btn-default btn-lg" style="display: block; border-radius: 0px">
+                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            </button>
+            <div id="myDropdown" class="dropdown-content">
+                <span class="marginer">
+                    <label id="sizer">  Pen size:</label>
+                    <input id="sizebar" type="range" min="1" max="10" value="1" step="1" >
+                </span>
+                <span class="marginer">
+                    <label>Font size:</label>
+                    <select id="fontsize">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                        <option value="60">60</option>
+                    </select>
+                </span>
+                <span class="marginer">
+                    <label>Fonts:</label>
+                    <select id="fonts">
+                        <option value="Arial">Arial</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="serif">serif</option>
+                        <option value="sans-serif">sans-serif</option>
+                    </select>
+                </span>
+                
+            </div>
+        </div>
         </div>
         
         <div id="divcanvas">
-            <canvas id="myCanvas" width="800" height="480" style="border:1px solid; cursor:crosshair">
+            <canvas id="myCanvas" width="800" height="520" style="border:1px solid; cursor:crosshair">
                 <h1>Your browser does not support the HTML5 canvas tag.</h1>
             </canvas>
         </div>
-        <div id="well" class="well">
-            <span id="innerwell"class="well">
-                <label id="sizer">Pen size:</label>
-                <input id="sizebar" type="range" min="1" max="10" value="1" step="1" >
-            </span>
-            <span id="innerwell"class="well">
-                <label>Font size:</label>
-                <select id="fontsize">
-                    <option value="10px">10</option>
-                    <option value="20px">20</option>
-                    <option value="30px">30</option>
-                    <option value="40px">40</option>
-                    <option value="50px">50</option>
-                    <option value="60px">60</option>
-                </select>
-            </span>
-            <span id="innerwell" class="well">
-                <label>Fonts:</label>
-                <select id="fonts">
-                    <option value="Arial">Arial</option>
-                    <option value="Verdana">Verdana</option>
-                    <option value="Times New Roman">Times New Roman</option>
-                    <option value="Courier New">Courier New</option>
-                    <option value="serif">serif</option>
-                    <option value="sans-serif">sans-serif</option>
-                </select>
-            </span>
-            
-            <input id="typo" type="text" class="form-control" placeholder="Halló heimur!" style="display: none">
-     
-        </div>
+        <input id="typo" type="text" class="form-control" placeholder="Insert string..." style="display: none">
+        
     </body>
 </html>
