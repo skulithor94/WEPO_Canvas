@@ -13,10 +13,10 @@ $(document).ready(function(){
 		this.href = image;
 	});
 
+	//Saving API.
 	$("#cloudSaveButton").click(function(){
 		var canvas = document.getElementById("myCanvas");
 		var context = canvas.getContext("2d");
-		//var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 		var userId = $("#userIdInput").val();
 		var pictureTitle = $("#pictureTitleInput").val();
 		var checkbox = false;
@@ -32,28 +32,53 @@ $(document).ready(function(){
 		}
 
 		var param = { "user": userId, 
-				"name": pictureTitle,
-				"content": imageData,
-				"template": checkbox
-		};
+		"name": pictureTitle,
+		"content": imageData,
+		"template": checkbox
+	};
 
-		$.ajax({
-				type: "POST",
-				contentType: "application/json; charset=utf-8",
-				url: "http://whiteboard.apphb.com/Home/Save",
-				data: param,
-				dataType: "jsonp",
-				crossDomain: true,
-				success: function (data) {
-					console.log("Save successful!");
-				},
-				error: function (xhr, err) {
-					console.log("error");
-					alert("Something went wrong! " + err);
-				}
-		});
+	$.ajax({
+		type: "POST",
+		contentType: "application/json; charset=utf-8",
+		url: "http://whiteboard.apphb.com/Home/Save",
+		data: param,
+		dataType: "jsonp",
+		crossDomain: true,
+		success: function (data) {
+			$("#modalBodySave").empty();
+			$("#modalBodySave").append("<h3>Save successful!</h3>");
+		},
+		error: function (xhr, err) {
+			$("#modalBodySave").empty();
+			$("#modalBodySave").append("<h3>Save unsuccessful!</h3>");
+		}
+	});
+});
+
+	//Function used to reset save modal after it has been closed.
+	$("#saveCloseButton").click(function(){
+		$("#modalBodySave").empty();
+		$("#modalBodySave").append("Here you can save to local storage or to the cloud.");
+		$("#userIdInput").val('');
+		$("#pictureTitleInput").val('');
+		$('#templateCheckbox').attr('checked', false);
+		$(this).removeClass();
+		$(this).addClass('btn btn-info');
 	});
 
+	//Function used to reset load modal after it has been closed.
+	function closeLoadModal(){
+		$("#modalBodyLoad").empty();
+		$("#modalBodyLoad").append("Here you can load images from the cloud or local storage.");
+		$("#userIdInputForLoad").val('');
+		$('#templateCheckboxForLoad').attr('checked', false);
+		$(this).removeClass();
+		$(this).addClass('btn btn-info');
+	};
+
+	$("#loadCloseButton").on("click", closeLoadModal()); 
+
+	//Loading API.
 	$("#cloudLoadButton").click(function(){
 		var userId = $("#userIdInputForLoad").val();
 		var checkbox = false;
@@ -65,24 +90,24 @@ $(document).ready(function(){
 		}
 
 		var param = { "user": userId, 
-				"template": checkbox
-		};
+		"template": checkbox
+	};
 
-		$.ajax({
-			type: "GET",
-			url: "http://whiteboard.apphb.com/Home/GetList",
-			dataType: "jsonp",
-			crossDomain: true,
-			data: param
-		}).done(function(data){
-			var $modal = $("#modalBodyLoad");
-			$modal.empty();
-			$modal.append("<ol></ol>");
-			for (var i = 0; i < data.length; i++) {
-				$("#modalBodyLoad ol").append("<li><a data-id='" + data[i].ID + "' data-user='" + userId + "'>ID: " + data[i].ID + " Name: " + data[i].WhiteboardTitle + "</a></li>");
-			};
-		});
+	$.ajax({
+		type: "GET",
+		url: "http://whiteboard.apphb.com/Home/GetList",
+		dataType: "jsonp",
+		crossDomain: true,
+		data: param
+	}).done(function(data){
+		var $modal = $("#modalBodyLoad");
+		$modal.empty();
+		$modal.append("<ol></ol>");
+		for (var i = 0; i < data.length; i++) {
+			$("#modalBodyLoad ol").append("<li><a data-id='" + data[i].ID + "' data-user='" + userId + "'>ID: " + data[i].ID + " Name: " + data[i].WhiteboardTitle + "</a></li>");
+		};
 	});
+});
 
 	$(document).on('click', '#modalBodyLoad ol li a', function(evt){
 
@@ -94,8 +119,6 @@ $(document).ready(function(){
 			crossDomain: true,
 			data: { id: ID }
 		}).done(function(data){
-			//var canvas = document.getElementById("myCanvas");
-			//var context = canvas.getContext("2d");
 			var tempShapes = data.WhiteboardContents;
 			tempShapes = JSON.parse(tempShapes);
 			console.log(tempShapes);
@@ -107,12 +130,13 @@ $(document).ready(function(){
 			};
 			console.log(shapes);
 			$("#loadModal").modal('hide');
+			closeLoadModal();
 		});
 	});
 
 	function getShapeByName(arrayEntry){
 		if (arrayEntry.name === "Rectangle"){
-		 	return new Rectangle("Rectangle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width);
+			return new Rectangle("Rectangle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width);
 		}else if(arrayEntry.name === "Circle"){
 			return new Circle("Circle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.radius);
 		}else if(arrayEntry.name === "Line"){
@@ -122,7 +146,7 @@ $(document).ready(function(){
 		}else{
 			return new Pen("Pen", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.points);
 		}
-	}
+	};
 	//Loading images
 	$("#loadButton").click(function(){
 		$("#loadModal").modal('show');
