@@ -24,6 +24,18 @@ $(document).ready(function(){
 	//so the user can undo the clear and get back his work.
 	var undoCanvas = [];			
 	var textid = document.getElementById("typo");
+	var checked = false;
+
+	var checkchecker = document.getElementById("checker");
+	checkchecker.addEventListener("click", function(){
+		if(document.getElementById("checker").checked){
+			checked = true;
+		}
+		else{
+			checked = false;
+		}
+	}, false);
+
 	$("#fonts").change(function(){
 		font = $(this).val();
 	});
@@ -250,9 +262,9 @@ $(document).ready(function(){
 		var tempX = evt.x - boundingRect.left;
 		var tempY = evt.y - boundingRect.top;
 		if (button === "rectButton"){
-		 	return new Rectangle("Rectangle", tempX, tempY, tempX, tempY, color, width);
+		 	return new Rectangle("Rectangle", tempX, tempY, tempX, tempY, color, width, checked);
 		}else if(button === "circleButton"){
-			return new Circle("Circle", tempX, tempY, tempX, tempY, color, width, 0);
+			return new Circle("Circle", tempX, tempY, tempX, tempY, color, width, 0, checked);
 		}else if(button === "lineButton"){
 			return new Line("Line", tempX, tempY, tempX, tempY, color, width);
 		}else if(button === "textButton"){
