@@ -28,14 +28,14 @@ var Line = Shape.extend({
 		x = x - rect.left;
 		y = y - rect.top;
 
-		var slope = (this.endY - this.y)/(this.endX - this.x);
+		/*var slope = (this.endY - this.y)/(this.endX - this.x);
 		console.log(slope);
 		var intersection = this.y - (slope * this.x);
 		console.log(intersection);
 
-		var distance;
+		var distance;*/
 		//if line is drawn from lower-left to upper-right
-		/*if((x >= this.x && x <= this.endX) && (y <= this.y && y >= this.endY)){
+		if((x >= this.x && x <= this.endX) && (y <= this.y && y >= this.endY)){
 			return true;
 		}
 		//if line is drawn from upper-right to lower-left
@@ -52,7 +52,7 @@ var Line = Shape.extend({
 		}
 		else{
 			return false;
-		}*/
+		}
 	},
 	move: function(deltaX, deltaY){
 		console.log(this);
