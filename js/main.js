@@ -125,24 +125,55 @@ $(document).ready(function(){
 	//When user clicks on the canvas the shape object determines 
 	//what should be drawn.
 	canvas.onmousedown = function(evt){
+		button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
 		disableRedo();
 		isDown = true;
-		var shape = getShape(evt);
+
+		if(button === "selectButton"){
+			var target;
+			for(var shape in shapes) {
+				shape = shapes[shape];
+				if(shape.contains(canvas, evt.x, evt.y)){
+					target = shape;
+				}
+			}
+			console.log(target);
+			var point = {x: evt.x, y: evt.y};
 			canvas.onmousemove = function(evt){
-				if(!isDown){
+				if(!isDown || !target){
 					return;
 				}
-				shape.drawing(canvas, evt);
+				var deltaX = point.x - evt.x;
+				var deltaY = point.y - evt.y;
+				point.x = evt.x;
+				point.y = evt.y;
+				target.move(deltaX, deltaY);
 				redraw();
-				shape.draw(context);
 			}
 			canvas.onmouseup = function(evt){
 				isDown = false;
-				shape.draw(context);
-				shapes.push(shape);
 				redraw();
 			}
-		redraw();
+		}
+		else{
+			var shape = getShape(evt);
+				canvas.onmousemove = function(evt){
+					if(!isDown){
+						return;
+					}
+					shape.drawing(canvas, evt);
+					redraw();
+					shape.draw(context);
+				}
+				canvas.onmouseup = function(evt){
+					isDown = false;
+					shape.draw(context);
+					shapes.push(shape);
+					redraw();
+				}
+				redraw();
+			}
+		
 	};
 
 	//Function that clears the whole canvas and draws all the shapes again:
@@ -176,7 +207,7 @@ $(document).ready(function(){
 			return new Line(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}else if(button === "textButton"){
 			return new Font(evt.x - boundingRect.left, evt.y - boundingRect.top, color, fontsize + ' ' + font, text);
-		}else{
+		}else{			
 			return new Pen(evt.x - boundingRect.left, evt.y - boundingRect.top, color, width);
 		}
 	}

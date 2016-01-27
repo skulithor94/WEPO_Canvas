@@ -10,5 +10,8 @@ var Shape = Base.extend({
 	},
 	draw: function(canvas){
 		
+	},
+	contains: function(x, y){
+		
 	}
 });

@@ -18,5 +18,18 @@ var Font = Shape.extend({
 	},
 	drawing: function(canvas, e){
 
+	},
+	contains: function(c, x, y){
+		if(x == this.x && y == this.y){
+			return true;
+		}
+		else{
+			return false;
+		}
+	},
+	move: function(deltaX, deltaY){
+		this.x = this.x - deltaX;
+		this.y = this.y - deltaY;
+		console.log(deltaX, deltaY);
 	}
 })
