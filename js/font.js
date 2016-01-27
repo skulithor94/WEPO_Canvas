@@ -11,7 +11,6 @@ var Font = Shape.extend({
 		context.fillStyle = this.color;
 		context.font = this.width;
 		context.fillText(this.text, this.x, this.y);
-		context.stroke();
 		context.closePath();
 	},
 	drawing: function(canvas, e){

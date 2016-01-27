@@ -1,12 +1,15 @@
 	var shapes = [];
+	var canvas;
+	var context;
 $(document).ready(function(){
 
-	var canvas = document.getElementById("myCanvas");
-	var context = canvas.getContext("2d");
+	canvas = document.getElementById("myCanvas");
+	context = canvas.getContext("2d");
 
 	var button = "penButton";		//Default tool.
 	var buttonID;
 	var isDown = false;
+	var isOut = false;
 	var boundingRect = canvas.getBoundingClientRect(); //Used to get correct cords for canvas.
 	var color = "black";
 	var width = "1";
@@ -20,7 +23,7 @@ $(document).ready(function(){
 	//If the user clears the canvas all objects are stored here
 	//so the user can undo the clear and get back his work.
 	var undoCanvas = [];			
-
+	var textid = document.getElementById("typo");
 	$("#fonts").change(function(){
 		font = $(this).val();
 	});
@@ -31,12 +34,11 @@ $(document).ready(function(){
 
 	$("#typo").on("keydown",function gettext(e) {
     	if(e.keyCode == 13) {
-    		var textid = document.getElementById("typo");
+    		
         	text = textid.value;
         	textid.value = "";
         	textid.style.display = "none";
         	
-        	//var foo = shapes[shapes.length - 1];
         	var foo = shapes.pop();
         	var shape = getShape(e);
         	shape.x = foo.x;
@@ -165,6 +167,9 @@ $(document).ready(function(){
 				}
 			}
 			canvas.onmouseup = function(evt){
+				if (isOut) {
+					return;
+				}
 				isDown = false;
 				if(button == "textButton"){
 					shape.texting(context);
@@ -177,16 +182,18 @@ $(document).ready(function(){
 			}
 			canvas.onmouseout = function(evt){
 				isDown = false;
-				if(button == "textButton"){
-					var textid = document.getElementById("typo");
-		        	text = textid.value;
-		        	textid.value = "";
-		        	textid.style.display = "none";
-				}
-				else{
+				isOut = true;
+				
 					shape.draw(context);
-				}
 				shapes.push(shape);
+				redraw();
+			}
+			textid.onmouseout = function(evt){
+				isDown = false;
+				text = textid.value;
+		        textid.value = "";
+		       	textid.style.display = "none";
+		       	shapes.push(shape);
 				redraw();
 			}
 			

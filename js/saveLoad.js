@@ -94,19 +94,18 @@ $(document).ready(function(){
 			crossDomain: true,
 			data: { id: ID }
 		}).done(function(data){
-			var canvas = document.getElementById("myCanvas");
-			var context = canvas.getContext("2d");
+			//var canvas = document.getElementById("myCanvas");
+			//var context = canvas.getContext("2d");
 			var tempShapes = data.WhiteboardContents;
 			tempShapes = JSON.parse(tempShapes);
 			console.log(tempShapes);
-			console.log(tempShapes.length);
-			console.log(tempShapes[0]);
 			for (var i = 0; i < tempShapes.length; i++) {
 				shapes.push(getShapeByName(tempShapes[i]));
 			}
 			for (var i = 0; i < shapes.length; i++) {
 				shapes[i].draw(context);
 			};
+			console.log(shapes);
 			$("#loadModal").modal('hide');
 		});
 	});
@@ -119,7 +118,6 @@ $(document).ready(function(){
 		}else if(arrayEntry.name === "Line"){
 			return new Line("Line", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width);
 		}else if(arrayEntry.name === "Text"){
-			//TODO: FIX THIS, ÞETTA ER EKKI RÉTT, Á AÐ VERA EINS OG HIN!!
 			return new Font("Text", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.text);
 		}else{
 			return new Pen("Pen", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.points);
