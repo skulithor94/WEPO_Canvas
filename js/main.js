@@ -187,14 +187,7 @@ $(document).ready(function(){
 				shapes.push(shape);
 				redraw();
 			}
-			textid.onmouseout = function(evt){
-		
-				text = textid.value;
-		        textid.value = "";
-		       	textid.style.display = "none";
-		    	shapes.pop();
-			}
-			
+
 		redraw();
 	};
 
