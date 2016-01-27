@@ -159,13 +159,45 @@ $(document).ready(function(){
 		isDown = true;
 		var shape = getShape(evt);
 		var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
+
+		if(button === "selectButton"){
+			var target;
+			for(var shape in shapes) {
+				shape = shapes[shape];
+				if(shape.contains(canvas, evt.x, evt.y)){
+					target = shape;
+				}
+			}
+			console.log(target);
+			var point = {x: evt.x, y: evt.y};
+
 		
 			canvas.onmousemove = function(evt){
-				if(!isDown && !isOut){
+
+				if(!isDown || !target){
 					return;
 				}
-				shape.drawing(canvas, evt);
+				var deltaX = point.x - evt.x;
+				var deltaY = point.y - evt.y;
+				point.x = evt.x;
+				point.y = evt.y;
+				target.move(deltaX, deltaY);
 				redraw();
+
+			}
+			canvas.onmouseup = function(evt){
+				isDown = false;
+				redraw();
+			}
+		}
+		else{
+			var shape = getShape(evt);
+				canvas.onmousemove = function(evt){
+					if(!isDown){
+						return;
+					}
+					shape.drawing(canvas, evt);
+					redraw();
 				if(button == "textButton"){
 					shape.texting(context);
 				}
@@ -189,7 +221,8 @@ $(document).ready(function(){
 			}
 
 		redraw();
-	};
+	}
+}
 
 	//Function that clears the whole canvas and draws all the shapes again:
 	//Used so only one instance of each object is seen while drawing, not all of them.

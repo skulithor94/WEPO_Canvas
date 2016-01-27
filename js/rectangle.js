@@ -20,5 +20,38 @@ var Rectangle = Shape.extend({
 		var rect = canvas.getBoundingClientRect();
 		this.endX = e.x - this.x - rect.left;
 		this.endY = e.y - this.y - rect.top;
+	},
+	//Checks if the point (x, y) is within the boundaries of the rectangle
+	contains: function(c, x, y){
+		var rect = c.getBoundingClientRect();
+		x = x - rect.left;
+		y = y - rect.top;
+
+		//if box is drawn from lower-left to upper-right
+		if((x >= this.x && x <= (this.endX + this.x)) && (y <= this.y && y >= (this.endY + this.y))){
+			return true;
+		}
+		//if box is drawn from upper-right to lower-left
+		else if((x <= this.x && x >= (this.endX + this.x)) && (y >= this.y && y <= (this.endY + this.y))){
+			return true;
+		}
+		//if box is drawn from upper-left to lower-right
+		else if((x >= this.x && x <= (this.endX + this.x)) && (y >= this.y && y <= (this.endY + this.y))){
+			return true;
+		}
+		//if box is drawn from lower-right to upper-left
+		else if((x <= this.x && x >= (this.endX + this.x)) && (y <= this.y && y >= (this.endY + this.y))){
+			return true;
+		}
+		else{
+			return false;
+		}
+	},
+	move: function(deltaX, deltaY){
+		console.log(this);
+		this.x = this.x - deltaX;
+		this.y = this.y - deltaY;
+		console.log(this);
+		console.log(deltaX, deltaY);
 	}
 });
