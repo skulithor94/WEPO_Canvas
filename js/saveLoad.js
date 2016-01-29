@@ -1,10 +1,10 @@
 $(document).ready(function(){
-	//Saving
+	//Saving modal opening
 	$("#saveButton").click(function(){
 		$("#saveModal").modal('show');
 	});
 
-	//Loading
+	//Loading modal opening
 	$("#loadButton").click(function(){
 		$("#loadModal").modal('show');
 	});
@@ -26,8 +26,6 @@ $(document).ready(function(){
 		var pictureTitle = $("#pictureTitleInput").val();
 		var checkbox     = false;
 
-		console.log(shapes);
-
 		imageData = JSON.stringify(shapes);
 
 		if ($("#templateCheckbox").is(':checked')) {
@@ -35,30 +33,29 @@ $(document).ready(function(){
 		}else{
 			checkbox = false;
 		}
-
 		var param = { "user": userId, 
-		"name": pictureTitle,
-		"content": imageData,
-		"template": checkbox
-	};
+			"name": pictureTitle,
+			"content": imageData,
+			"template": checkbox
+		};
 
-	$.ajax({
-		type: "POST",
-		contentType: "application/json; charset=utf-8",
-		url: "http://whiteboard.apphb.com/Home/Save",
-		data: param,
-		dataType: "jsonp",
-		crossDomain: true,
-		success: function (data) {
-			$("#modalBodySave").empty();
-			$("#modalBodySave").append("<h3>Save successful!</h3>");
-		},
-		error: function (xhr, err) {
-			$("#modalBodySave").empty();
-			$("#modalBodySave").append("<h3>Save unsuccessful!</h3>");
-		}
+		$.ajax({
+			type: "POST",
+			contentType: "application/json; charset=utf-8",
+			url: "http://whiteboard.apphb.com/Home/Save",
+			data: param,
+			dataType: "jsonp",
+			crossDomain: true,
+			success: function (data) {
+				$("#modalBodySave").empty();
+				$("#modalBodySave").append("<h3>Save successful!</h3>");
+			},
+			error: function (xhr, err) {
+				$("#modalBodySave").empty();
+				$("#modalBodySave").append("<h3>Save unsuccessful!</h3>");
+			}
+		});
 	});
-});
 
 	//Function used to reset save modal after it has been closed.
 	$("#saveCloseButton").click(function(){
@@ -79,7 +76,7 @@ $(document).ready(function(){
 		$('#templateCheckboxForLoad').attr('checked', false);
 		$(this).removeClass();
 		$(this).addClass('btn btn-info');
-	};
+	}
 
 	$("#loadCloseButton").on("click", closeLoadModal); 
 
@@ -93,30 +90,29 @@ $(document).ready(function(){
 		}else{
 			checkbox = false;
 		}
-
 		var param = { "user": userId, 
 		"template": checkbox
 	};
 
-	$.ajax({
-		type: "GET",
-		url: "http://whiteboard.apphb.com/Home/GetList",
-		dataType: "jsonp",
-		crossDomain: true,
-		data: param
-	}).done(function(data){
-		var $modal = $("#modalBodyLoad");
-		$modal.empty();
-		$modal.append("<ol></ol>");
-		for (var i = 0; i < data.length; i++) {
-			$("#modalBodyLoad ol").append("<li><a data-id='" + data[i].ID + "' data-user='" + userId + "'>ID: " + data[i].ID + " Name: " + data[i].WhiteboardTitle + "</a></li>");
-		};
+		$.ajax({
+			type: "GET",
+			url: "http://whiteboard.apphb.com/Home/GetList",
+			dataType: "jsonp",
+			crossDomain: true,
+			data: param
+		}).done(function(data){
+			var $modal = $("#modalBodyLoad");
+			$modal.empty();
+			$modal.append("<ol></ol>");
+			for (var i = 0; i < data.length; i++) {
+				$("#modalBodyLoad ol").append("<li><a data-id='" + data[i].ID + "' data-user='" + userId + "'>ID: " + data[i].ID + " Name: " + data[i].WhiteboardTitle + "</a></li>");
+			};
+		});
 	});
-});
 
 	$(document).on('click', '#modalBodyLoad ol li a', function(evt){
-
 		var ID = $(this).attr("data-id");
+
 		$.ajax({
 			type: "GET",
 			url: "http://whiteboard.apphb.com/Home/GetWhiteboard",
@@ -126,14 +122,12 @@ $(document).ready(function(){
 		}).done(function(data){
 			var tempShapes = data.WhiteboardContents;
 			tempShapes = JSON.parse(tempShapes);
-			console.log(tempShapes);
 			for (var i = 0; i < tempShapes.length; i++) {
 				shapes.push(getShapeByName(tempShapes[i]));
 			}
 			for (var i = 0; i < shapes.length; i++) {
 				shapes[i].draw(context);
 			};
-			console.log(shapes);
 			$("#loadModal").modal('hide');
 			closeLoadModal();
 		});

@@ -1,11 +1,10 @@
 	var shapes = [];
 	var canvas;
 	var context;
-$(document).ready(function(){
+	$(document).ready(function(){
 
 	canvas = document.getElementById("myCanvas");
 	context = canvas.getContext("2d");
-
 	var button = "penButton";		//Default tool.
 	var buttonID;
 	var isDown = false;
@@ -16,14 +15,19 @@ $(document).ready(function(){
 	var font = "Arial";
 	var fontsize = "10";
 	var text = "";
-	var undoObject; 				//An object is kept in this variable if it is undone.
+
+	//An array which stores the objects that have been undone on the canvas and used for redoing.
+	//It is cleared of its contents if an object is moved or another object created.
+	var undoObjects = []; 
 	var hasBeenCleared = false;		//Used in functions to tell if canvas has been cleared.
 	var wasCleared = false;			//Used to tell if the whole canvas was cleared before last undo operation.
 	var textisvalid = false;
+
 	//If the user clears the canvas all objects are stored here
 	//so the user can undo the clear and get back his work.
-	var undoCanvas = [];			
+	var undoCanvas = [];	
 	var textid = document.getElementById("typo");
+
 	$("#fonts").change(function(){
 		font = $(this).val();
 	});
@@ -33,25 +37,20 @@ $(document).ready(function(){
 	});
 
 	$("#typo").on("keydown",function gettext(e) {
-    	if(e.keyCode == 13) {
-    		
-        	text = textid.value;
-        	textid.value = "";
-        	textid.style.display = "none";
-        	
-        	var temp = shapes[shapes.length -1];
-        	console.log("temp:");
-        	console.log(temp);
-        	shapes.pop();
-        	var shape = getShape(e);
-        	console.log("shape: ");
-        	console.log(shape);
-        	shape.x = temp.x;
-        	shape.y = temp.y;
-        	shape.width = temp.width;
-        	shape.color = temp.color;
-        	/*x,y, color, width, text*/
-        	shape.draw(context);
+		if(e.keyCode == 13) {
+
+			text = textid.value;
+			textid.value = "";
+			textid.style.display = "none";
+			var temp = shapes[shapes.length -1];
+			shapes.pop();
+			var shape = getShape(e);
+			shape.x = temp.x;
+			shape.y = temp.y;
+			shape.width = temp.width;
+			shape.color = temp.color;
+			/*x,y, color, width, text*/
+			shape.draw(context);
 			shapes.push(shape);
 			text = "";
 			redraw();
@@ -63,12 +62,9 @@ $(document).ready(function(){
 		$(this).width("auto");
 	});
 
-
 	$("#sizebar").change(function(){
 		width = $(this).val();
 	});
-
-
 
 	//These functions undo and redo provide only one level of undo/redo
 	//if the user removes two shapes he will only get the latter back
@@ -85,7 +81,7 @@ $(document).ready(function(){
 			return;
 		};
 		wasCleared = false;
-		undoObject = shapes.pop();
+		undoObjects.push(shapes.pop());
 		redraw();
 	});
 
@@ -94,9 +90,8 @@ $(document).ready(function(){
 			clear();
 			wasCleared = false;
 		}
-		if(undoObject !== undefined){
-			shapes.push(undoObject);
-			undoObject = undefined;
+		if(undoObjects.length !== 0){
+			shapes.push(undoObjects.pop());
 			redraw();
 			wasCleared = false;
 		}
@@ -110,8 +105,8 @@ $(document).ready(function(){
 
 		if(tooglableButtons()){
 			$("#buttonMenu button").each(function(){
-			$(this).removeClass();
-			$(this).addClass('btn btn-default btn-lg');
+				$(this).removeClass();
+				$(this).addClass('btn btn-default btn-lg');
 			})
 			$(buttonID).addClass("btn btn-success btn-lg");
 		}
@@ -123,10 +118,11 @@ $(document).ready(function(){
 	//a tool with which to draw. 
 	function tooglableButtons(){
 		return buttonID !== "#color" && buttonID !== "#undoButton" && buttonID !== "#redoButton" 
-			&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton"
-			&& buttonID !== "#localSaveButton" && buttonID !== "#cloudSaveButton" && buttonID !== "#localLoadButton"
-			&& buttonID !== "#cloudLoadButton" 	&& buttonID !== "#sizedrop" && buttonID !== "#settingsButton";
+		&& buttonID !== "#clearButton" && buttonID !== "#saveButton" && buttonID !== "#loadButton"
+		&& buttonID !== "#localSaveButton" && buttonID !== "#cloudSaveButton" && buttonID !== "#localLoadButton"
+		&& buttonID !== "#cloudLoadButton" 	&& buttonID !== "#sizedrop" && buttonID !== "#settingsButton";
 	}
+
 	//Function that clears the whole canvas. The extra variables
 	//make it so the user can undo the clear. 
 	function clear(){
@@ -135,27 +131,29 @@ $(document).ready(function(){
 			undoCanvas = shapes;
 			shapes = [];
 			hasBeenCleared = true;
-			undoObject = undefined;
+			undoObjects = [];
 		}
 	}
 
 	var coloring = document.getElementById("ground"), 		
-		rainbow = document.getElementById("rainbow");
+	rainbow = document.getElementById("rainbow");
 
 	coloring.addEventListener("input", function(){
 		color = coloring.value;
 		rainbow.style.color = color;
 	}, false);
 
+	//Function that disables the redo function if an object on the canvas
+	//is moved or created.
 	function disableRedo(){
 		wasCleared = false;
+		undoObjects = [];
 	};
 
-	//Function that handles drawing on the canvas.
-	//When user clicks on the canvas the shape object determines 
-	//what should be drawn.
+	//Function that handles drawing on the canvas. When user clicks on 
+	//the canvas the shape object determines what should be drawn.
+	//The function is split into select mode and create mode.
 	canvas.onmousedown = function(evt){
-		disableRedo();
 		isDown = true;
 		var shape = getShape(evt);
 		var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
@@ -168,12 +166,9 @@ $(document).ready(function(){
 					target = shape;
 				}
 			}
-			console.log(target);
 			var point = {x: evt.x, y: evt.y};
 
-		
 			canvas.onmousemove = function(evt){
-
 				if(!isDown || !target){
 					return;
 				}
@@ -183,7 +178,7 @@ $(document).ready(function(){
 				point.y = evt.y;
 				target.move(deltaX, deltaY);
 				redraw();
-
+				disableRedo();
 			}
 			canvas.onmouseup = function(evt){
 				isDown = false;
@@ -192,18 +187,19 @@ $(document).ready(function(){
 		}
 		else{
 			var shape = getShape(evt);
-				canvas.onmousemove = function(evt){
-					if(!isDown){
-						return;
-					}
-					shape.drawing(canvas, evt);
-					redraw();
+			canvas.onmousemove = function(evt){
+				if(!isDown){
+					return;
+				}
+				shape.drawing(canvas, evt);
+				redraw();
 				if(button == "textButton"){
 					shape.texting(context);
 				}
 				else{
 					shape.draw(context);
 				}
+				disableRedo();
 			}
 			canvas.onmouseup = function(evt){
 				if (isOut) {
@@ -219,10 +215,9 @@ $(document).ready(function(){
 				shapes.push(shape);
 				redraw();
 			}
-
-		redraw();
+			redraw();
+		}
 	}
-}
 
 	//Function that clears the whole canvas and draws all the shapes again:
 	//Used so only one instance of each object is seen while drawing, not all of them.
@@ -231,17 +226,16 @@ $(document).ready(function(){
 		for (var i = 0; i < shapes.length; i++) {
 			shapes[i].draw(context);
 		};
-		//console.log(shapes);
 	}
 
 	//Function provided by user Austin Brunkhorst on
 	//http://stackoverflow.com/questions/17386707/how-to-check-if-a-canvas-is-blank
 	function isCanvasBlank(canvas) {
-    	var blank = document.createElement('canvas');
-    	blank.width = canvas.width;
-    	blank.height = canvas.height;
+		var blank = document.createElement('canvas');
+		blank.width = canvas.width;
+		blank.height = canvas.height;
 
-    	return canvas.toDataURL() == blank.toDataURL();
+		return canvas.toDataURL() == blank.toDataURL();
 	}
 
 	//Function that returns the shape which corresponds to the button that is pressed.
@@ -250,7 +244,7 @@ $(document).ready(function(){
 		var tempX = evt.x - boundingRect.left;
 		var tempY = evt.y - boundingRect.top;
 		if (button === "rectButton"){
-		 	return new Rectangle("Rectangle", tempX, tempY, tempX, tempY, color, width);
+			return new Rectangle("Rectangle", tempX, tempY, tempX, tempY, color, width);
 		}else if(button === "circleButton"){
 			return new Circle("Circle", tempX, tempY, tempX, tempY, color, width, 0);
 		}else if(button === "lineButton"){
@@ -263,7 +257,7 @@ $(document).ready(function(){
 	}
 })
 
-function openDropdown() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}   
+	function openDropdown() {
+		document.getElementById("myDropdown").classList.toggle("show");
+	}   
 	
