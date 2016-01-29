@@ -4,22 +4,27 @@ $(document).ready(function(){
 		$("#saveModal").modal('show');
 	});
 
+	//Loading
+	$("#loadButton").click(function(){
+		$("#loadModal").modal('show');
+	});
+
 	//Code from http://stackoverflow.com/questions/10673122/how-to-save-canvas-as-an-image-with-canvas-todataurl
 	//and http://stackoverflow.com/questions/12796513/html5-canvas-to-png-file
 	//user1874941 and Nippey
 	$("#localSaveButton").click(function(){
 		var canvas = document.getElementById("myCanvas");
-		var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
-		this.href = image;
+		var image  = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+		this.href  = image;
 	});
 
 	//Saving API.
 	$("#cloudSaveButton").click(function(){
-		var canvas = document.getElementById("myCanvas");
-		var context = canvas.getContext("2d");
-		var userId = $("#userIdInput").val();
+		var canvas       = document.getElementById("myCanvas");
+		var context      = canvas.getContext("2d");
+		var userId       = $("#userIdInput").val();
 		var pictureTitle = $("#pictureTitleInput").val();
-		var checkbox = false;
+		var checkbox     = false;
 
 		console.log(shapes);
 
@@ -69,18 +74,18 @@ $(document).ready(function(){
 	//Function used to reset load modal after it has been closed.
 	function closeLoadModal(){
 		$("#modalBodyLoad").empty();
-		$("#modalBodyLoad").append("Here you can load images from the cloud or local storage.");
+		$("#modalBodyLoad").append("Here you can load images from the cloud.");
 		$("#userIdInputForLoad").val('');
 		$('#templateCheckboxForLoad').attr('checked', false);
 		$(this).removeClass();
 		$(this).addClass('btn btn-info');
 	};
 
-	$("#loadCloseButton").on("click", closeLoadModal()); 
+	$("#loadCloseButton").on("click", closeLoadModal); 
 
 	//Loading API.
 	$("#cloudLoadButton").click(function(){
-		var userId = $("#userIdInputForLoad").val();
+		var userId   = $("#userIdInputForLoad").val();
 		var checkbox = false;
 
 		if ($("#templateCheckboxForLoad").is(':checked')) {
@@ -147,17 +152,4 @@ $(document).ready(function(){
 			return new Pen("Pen", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.points);
 		}
 	};
-	//Loading images
-	$("#loadButton").click(function(){
-		$("#loadModal").modal('show');
-	});
-	//TODO: FIX THIS!
-	$("input[type=file]").on('change', function(){
-		var canvas = document.getElementById("myCanvas");
-		var context = canvas.getContext("2d");
-		console.log("file ready");
-		var image = event.target.files[0];
-		context.drawImage(image, 0, 0);
-	});
-
 })
