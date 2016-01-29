@@ -208,6 +208,7 @@
 				isDown = false;
 				if(button == "textButton"){
 					shape.texting(context);
+					disableRedo();
 				}
 				else{
 					shape.draw(context);
