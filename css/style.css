@@ -54,3 +54,9 @@ label{
 .marginer{
     margin: 5;
 }
+
+#modalBodyLoad ol{
+    overflow-y: auto;
+    height: 100px;
+}
+

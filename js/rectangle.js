@@ -2,10 +2,11 @@ var Rectangle = Shape.extend({
 	constructor: function(name, x, y, color, width){
 		this.base(name, x, y, color, width);
 	},
-	constructor: function(name, x, y, endX, endY, color, width){
+	constructor: function(name, x, y, endX, endY, color, width, check){
 		this.base(name, x, y, color, width);
 		this.endX = endX;
 		this.endY = endY;
+		this.check = check;
 	},
 	draw: function(context, e){
 		if(this.x === this.endX && this.y === this.endY){
@@ -13,7 +14,14 @@ var Rectangle = Shape.extend({
 		}
 		context.strokeStyle = this.color;
 		context.lineWidth = this.width;
-		context.strokeRect(this.x, this.y, this.endX, this.endY);
+		if(this.check){
+			context.fillStyle = this.color;
+			context.fillRect(this.x, this.y, this.endX, this.endY);
+		}
+		else{
+			context.strokeRect(this.x, this.y, this.endX, this.endY);
+		}
+		
 		context.closePath();
 	},
 	drawing: function(canvas, e){
