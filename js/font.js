@@ -3,11 +3,12 @@ var Font = Shape.extend({
 		this.base(name, x, y, color, width);
 		this.text = text;
 	},
-	constructor: function(name, x, y, endX, endY, color, width, text){
+	constructor: function(name, x, y, endX, endY, color, width, text, fontsize){
 		this.base(name, x, y, endX, endY, color, width);
 		this.width = width;
 		this.color = color;
 		this.text = text;
+		this.fontsize = fontsize;
 	},
 	draw: function(context, e){
 		context.fillStyle = this.color;
@@ -19,7 +20,15 @@ var Font = Shape.extend({
 
 	},
 	contains: function(c, x, y){
-		if(x == this.x && y == this.y){
+		var rect = c.getBoundingClientRect();
+		x = x - rect.left;
+		y = y - rect.top;
+
+		stringLength = this.text.length;
+		console.log(this.text.length);
+		console.log(stringLength);
+		console.log(this.fontsize);
+		if(y <= this.y && y >= this.y - this.fontsize && x >= this.x && x <= (this.x + (stringLength * (this.fontsize / 2)))){
 			return true;
 		}
 		else{

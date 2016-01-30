@@ -168,7 +168,7 @@ $(document).ready(function(){
 					target = shape;
 				}
 			}
-			console.log(target);
+			//console.log(target);
 			var point = {x: evt.x, y: evt.y};
 
 		
@@ -256,7 +256,7 @@ $(document).ready(function(){
 		}else if(button === "lineButton"){
 			return new Line("Line", tempX, tempY, tempX, tempY, color, width);
 		}else if(button === "textButton"){
-			return new Font("Text", tempX, tempY, tempX, tempY, color, fontsize + 'px ' + font, text);
+			return new Font("Text", tempX, tempY, tempX, tempY, color, fontsize + 'px ' + font, text, fontsize);
 		}else{
 			return new Pen("Pen", tempX, tempY, tempX, tempY, color, width, [{x: tempX, y: tempY}]);
 		}
