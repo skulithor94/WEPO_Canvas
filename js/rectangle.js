@@ -53,10 +53,7 @@ var Rectangle = Shape.extend({
 		}
 	},
 	move: function(deltaX, deltaY){
-		console.log(this);
 		this.x = this.x - deltaX;
 		this.y = this.y - deltaY;
-		console.log(this);
-		console.log(deltaX, deltaY);
 	}
 });
