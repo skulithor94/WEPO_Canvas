@@ -1,7 +1,23 @@
+#buttonMenu{
+    float:left; 
+    height: 480px
+}
+
+.btn.btn-sucess.btn-lg{
+    display: block; 
+    border-radius: 0px;
+}
+
+.btn.btn-default.btn-lg{
+    display: block; 
+    border-radius: 0px;
+}
+
 #myCanvas{
+    border:1px solid; 
+    cursor:crosshair;
 	border-style: solid;
 	border-color: rgb(0,0,0);
-
 }
 
 #ground{
@@ -59,4 +75,3 @@ label{
     overflow-y: auto;
     height: 100px;
 }
-
