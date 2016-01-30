@@ -1,7 +1,4 @@
 var Line = Shape.extend({
-	constructor: function(name, x, y, color, width){
-		this.base(name, x, y, color, width);
-	},
 	constructor: function(name, x, y, endX, endY, color, width){
 		this.base(name, x, y, color, width);
 		this.endX = endX;

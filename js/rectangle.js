@@ -1,7 +1,4 @@
 var Rectangle = Shape.extend({
-	constructor: function(name, x, y, color, width){
-		this.base(name, x, y, color, width);
-	},
 	constructor: function(name, x, y, endX, endY, color, width, check){
 		this.base(name, x, y, color, width);
 		this.endX = endX;

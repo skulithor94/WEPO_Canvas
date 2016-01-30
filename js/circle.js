@@ -1,8 +1,4 @@
 var Circle = Shape.extend({
-    constructor: function(name, x, y, color, width){
-        this.base(name, x, y, color, width);
-        this.radius = 0;
-    },
     constructor: function(name, x, y, endX, endY, color, width, radius, check){
         this.base(name, x, y, color, width);
         this.endX = endX;
