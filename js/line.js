@@ -11,7 +11,6 @@ var Line = Shape.extend({
 		context.moveTo(this.x, this.y);
 		context.lineTo(this.endX, this.endY);
 		context.stroke();
-		//
 		context.closePath();
 	},
 	drawing: function(canvas, e){
@@ -29,19 +28,12 @@ var Line = Shape.extend({
 		var perpslope = 0 - (1 / slope);
 		var intersection = this.y - (slope * this.x);
 		var perpintersection = y - (perpslope * x);
-		console.log(this.x, this.y, this.endX, this.endY);
-		console.log(slope);
-		console.log(perpslope);
-		console.log(intersection);
-		console.log(perpintersection);
-		console.log(x, y);
-
 
 		var lineX, lineY;
 		lineX = (perpintersection - intersection)/(slope - perpslope);
 		lineY = (slope * lineX) + intersection;
-		console.log(lineX, lineY);
 		
+		//Finds distance between the point you clicked and the line
 		var distance = Math.sqrt(((lineX - x)*(lineX - x)) + ((lineY - y)*(lineY - y)));
 
 		//if line is drawn from lower-left to upper-right
@@ -65,12 +57,9 @@ var Line = Shape.extend({
 		}
 	},
 	move: function(deltaX, deltaY){
-		//console.log(this);
 		this.x = this.x - deltaX;
 		this.y = this.y - deltaY;
 		this.endX = this.endX - deltaX;
 		this.endY = this.endY - deltaY;
-		//console.log(this);
-		//console.log(deltaX, deltaY);
 	}
 })

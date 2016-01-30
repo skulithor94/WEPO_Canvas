@@ -41,7 +41,7 @@ var Circle = Shape.extend({
         }
     },
     move: function(deltaX, deltaY){
-      this.x = this.x - deltaX;
-      this.y = this.y - deltaY;
+        this.x = this.x - deltaX;
+        this.y = this.y - deltaY;
     }
 });
