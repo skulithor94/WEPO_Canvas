@@ -3,17 +3,24 @@ var Circle = Shape.extend({
         this.base(name, x, y, color, width);
         this.radius = 0;
     },
-    constructor: function(name, x, y, endX, endY, color, width, radius){
+    constructor: function(name, x, y, endX, endY, color, width, radius, check){
         this.base(name, x, y, color, width);
         this.endX = endX;
         this.endY = endY;
         this.radius = radius;
+        this.check = check;
     },
     draw: function(context, e){
         context.strokeStyle = this.color;
         context.lineWidth = this.width;
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+        
+        if(this.check){
+            context.fillStyle = this.color;
+            context.fill();
+        }
+
         context.stroke();
         context.closePath();
     },
