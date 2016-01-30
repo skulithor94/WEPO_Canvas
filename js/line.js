@@ -62,4 +62,4 @@ var Line = Shape.extend({
 		this.endX = this.endX - deltaX;
 		this.endY = this.endY - deltaY;
 	}
-})
+});
