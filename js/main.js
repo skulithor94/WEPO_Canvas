@@ -29,6 +29,8 @@
 	var textid = document.getElementById("typo");
 	var checked = false;
 
+	//This is the fill tool in the tool menu. It checks if a circle
+	//or rectangle is supposed to be filled or not.
 	var checkchecker = document.getElementById("checker");
 	checkchecker.addEventListener("click", function(){
 		if(document.getElementById("checker").checked){
@@ -47,6 +49,8 @@
 		fontsize = $(this).val();
 	});
 
+	//Function used to insert the text from the text tool
+	//onto the canvas.
 	$("#typo").on("keydown",function gettext(e) {
 		if(e.keyCode == 13) {
 
@@ -90,7 +94,7 @@
 		}
 		if (shapes.length <= 0) {
 			return;
-		};
+		}
 		wasCleared = false;
 		undoObjects.push(shapes.pop());
 		redraw();
@@ -118,7 +122,7 @@
 			$("#buttonMenu button").each(function(){
 				$(this).removeClass();
 				$(this).addClass('btn btn-default btn-lg');
-			})
+			});
 			$(buttonID).addClass("btn btn-success btn-lg");
 		}
 	});
@@ -146,8 +150,8 @@
 		}
 	}
 
-	var coloring = document.getElementById("ground"), 		
-	rainbow = document.getElementById("rainbow");
+	var coloring = document.getElementById("ground"); 		
+	var rainbow = document.getElementById("rainbow");
 
 	coloring.addEventListener("input", function(){
 		color = coloring.value;
@@ -159,7 +163,7 @@
 	function disableRedo(){
 		wasCleared = false;
 		undoObjects = [];
-	};
+	}
 
 	//Function that handles drawing on the canvas. When user clicks on 
 	//the canvas the shape object determines what should be drawn.
@@ -169,6 +173,7 @@
 		var shape = getShape(evt);
 		var button = document.getElementsByClassName("btn-success")[0].getAttribute('id');
 
+		//Select mode
 		if(button === "selectButton"){
 			var target;
 			for(var shape in shapes) {
@@ -190,12 +195,13 @@
 				target.move(deltaX, deltaY);
 				redraw();
 				disableRedo();
-			}
+			};
 			canvas.onmouseup = function(evt){
 				isDown = false;
 				redraw();
-			}
+			};
 		}
+		//Draw mode
 		else{
 			var shape = getShape(evt);
 			canvas.onmousemove = function(evt){
@@ -211,7 +217,7 @@
 					shape.draw(context);
 				}
 				disableRedo();
-			}
+			};
 			canvas.onmouseup = function(evt){
 				if (isOut) {
 					return;
@@ -226,10 +232,10 @@
 				}
 				shapes.push(shape);
 				redraw();
-			}
+			};
 			redraw();
 		}
-	}
+	};
 
 	//Function that clears the whole canvas and draws all the shapes again:
 	//Used so only one instance of each object is seen while drawing, not all of them.
@@ -237,7 +243,7 @@
 		context.clearRect(0,0, context.canvas.width, context.canvas.height);
 		for (var i = 0; i < shapes.length; i++) {
 			shapes[i].draw(context);
-		};
+		}
 	}
 
 	//Function provided by user Austin Brunkhorst on
@@ -267,7 +273,7 @@
 			return new Pen("Pen", tempX, tempY, tempX, tempY, color, width, [{x: tempX, y: tempY}]);
 		}
 	}
-})
+});
 
 	function openDropdown() {
 		document.getElementById("myDropdown").classList.toggle("show");

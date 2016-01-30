@@ -14,17 +14,17 @@ $(document).ready(function(){
 	//user1874941 and Nippey
 	$("#localSaveButton").click(function(){
 		var canvas = document.getElementById("myCanvas");
-		var image  = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
-		this.href  = image;
+		var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+		this.href = image;
 	});
 
 	//Saving API.
 	$("#cloudSaveButton").click(function(){
-		var canvas       = document.getElementById("myCanvas");
-		var context      = canvas.getContext("2d");
-		var userId       = $("#userIdInput").val();
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var userId = $("#userIdInput").val();
 		var pictureTitle = $("#pictureTitleInput").val();
-		var checkbox     = false;
+		var checkbox = false;
 
 		imageData = JSON.stringify(shapes);
 
@@ -106,7 +106,7 @@ $(document).ready(function(){
 			$modal.append("<ol></ol>");
 			for (var i = 0; i < data.length; i++) {
 				$("#modalBodyLoad ol").append("<li><a data-id='" + data[i].ID + "' data-user='" + userId + "'>ID: " + data[i].ID + " Name: " + data[i].WhiteboardTitle + "</a></li>");
-			};
+			}
 		});
 	});
 
@@ -127,12 +127,14 @@ $(document).ready(function(){
 			}
 			for (var i = 0; i < shapes.length; i++) {
 				shapes[i].draw(context);
-			};
+			}
 			$("#loadModal").modal('hide');
 			closeLoadModal();
 		});
 	});
 
+	//Function is used to get the shape that is saved at arrayEntry and is used to draw 
+	//the picture loaded from "http://whiteboard.apphb.com/Home/GetWhiteboard"
 	function getShapeByName(arrayEntry){
 		if (arrayEntry.name === "Rectangle"){
 			return new Rectangle("Rectangle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.check);
@@ -145,5 +147,5 @@ $(document).ready(function(){
 		}else{
 			return new Pen("Pen", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.points);
 		}
-	};
-})
+	}
+});
