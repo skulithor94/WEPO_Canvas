@@ -135,9 +135,9 @@ $(document).ready(function(){
 
 	function getShapeByName(arrayEntry){
 		if (arrayEntry.name === "Rectangle"){
-			return new Rectangle("Rectangle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width);
+			return new Rectangle("Rectangle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.check);
 		}else if(arrayEntry.name === "Circle"){
-			return new Circle("Circle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.radius);
+			return new Circle("Circle", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width, arrayEntry.radius, arrayEntry.check);
 		}else if(arrayEntry.name === "Line"){
 			return new Line("Line", arrayEntry.x, arrayEntry.y, arrayEntry.endX, arrayEntry.endY, arrayEntry.color, arrayEntry.width);
 		}else if(arrayEntry.name === "Text"){
