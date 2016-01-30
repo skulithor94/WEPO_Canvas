@@ -28,29 +28,24 @@ var Circle = Shape.extend({
         var rect = canvas.getBoundingClientRect();
         this.endX = e.x - rect.left;
         this.endY = e.y - rect.top;
-        this.radius = Math.sqrt(Math.abs(((this.endX - this.x)*(this.endX - this.x))) + Math.abs(((this.endY-this.y)*(this.endY-this.y))));
+        this.radius = Math.sqrt(Math.abs(((this.endX - this.x)*(this.endX - this.x))) + Math.abs(((this.endY - this.y)*(this.endY - this.y))));
     },
     //Checks if the point (x, y) is within the boundaries of the circle
-	contains: function(c, x, y){
-		console.log(x, y);
-		var rect = c.getBoundingClientRect();
-		x = x - rect.left;
-		y = y - rect.top;
-		var distance = Math.sqrt(((this.x - x)*(this.x - x)) + ((this.y - y)*(this.y - y)));
+    contains: function(c, x, y){
+        var rect = c.getBoundingClientRect();
+        x = x - rect.left;
+        y = y - rect.top;
+        var distance = Math.sqrt(((this.x - x)*(this.x - x)) + ((this.y - y)*(this.y - y)));
 
-		if(distance <= this.radius){
-			console.log(x, y);
-			return true;
-		}
-		else{
-			return false;
-		}
-	},
-	move: function(deltaX, deltaY){
-		console.log(this);
-		this.x = this.x - deltaX;
-		this.y = this.y - deltaY;
-		console.log(this);
-		console.log(deltaX, deltaY);
-	}
+        if(distance <= this.radius){
+            return true;
+        }
+        else{
+            return false;
+        }
+    },
+    move: function(deltaX, deltaY){
+      this.x = this.x - deltaX;
+      this.y = this.y - deltaY;
+    }
 });
